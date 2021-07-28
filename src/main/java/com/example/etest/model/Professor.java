@@ -1,5 +1,8 @@
 package com.example.etest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -15,7 +18,7 @@ public class Professor implements Serializable {
     private String senha;
     private String matricula;
 
-    @OneToMany(mappedBy="professor")
+    @OneToMany()
     private List<Turma> turmas = new ArrayList<>();
 
     public Professor() {
