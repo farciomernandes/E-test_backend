@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/turmas")
-public class TurmasController {
+@RequestMapping("/turma")
+public class TurmaController {
     @Autowired
     TurmaRepository turmaRepository;
 
