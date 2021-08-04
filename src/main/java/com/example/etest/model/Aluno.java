@@ -1,13 +1,16 @@
 package com.example.etest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-public class Professor implements Serializable {
+public class Aluno implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +20,14 @@ public class Professor implements Serializable {
     private String senha;
     private String matricula;
 
-    @OneToMany()
+    @JsonBackReference()
+    @ManyToMany(mappedBy = "alunos")
     private List<Turma> turmas = new ArrayList<>();
 
-    public Professor() {
+    public Aluno() {
     }
 
-    public Professor(String nome, String email, String senha, String matricula) {
+    public Aluno(String nome, String email, String senha, String matricula) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -34,7 +38,7 @@ public class Professor implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Professor professor = (Professor) o;
+        Aluno professor = (Aluno) o;
         return id.equals(professor.id);
     }
 
@@ -90,4 +94,5 @@ public class Professor implements Serializable {
     public void setTurmas(List<Turma> turmas) {
         this.turmas = turmas;
     }
+
 }

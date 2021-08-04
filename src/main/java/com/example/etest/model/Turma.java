@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +20,14 @@ public class Turma implements Serializable {
 
     @ManyToOne()
     private Professor professor;
+
+    @JsonManagedReference()
+    @ManyToMany()
+    @JoinTable(name="TURMA_ALUNO",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "turma_id")
+    )
+    private List<Aluno> alunos = new ArrayList<>();
 
     public Turma() {
     }
@@ -73,13 +83,11 @@ public class Turma implements Serializable {
         this.professor = professor;
     }
 
-    @Override
-    public String toString() {
-        return "Turma{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", avisos='" + avisos + '\'' +
-                ", professor=" + professor +
-                '}';
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
     }
 }
