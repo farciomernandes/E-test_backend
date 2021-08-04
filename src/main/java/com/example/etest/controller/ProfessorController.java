@@ -3,7 +3,6 @@ package com.example.etest.controller;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import com.example.etest.repository.ProfessorRepository;
-import com.example.etest.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +26,13 @@ public class ProfessorController {
     public ResponseEntity buscarUm(@PathVariable Long id){
         Optional<Professor> professor = professorRepository.findById(id);
         return ResponseEntity.ok(professor);
+    }
+
+    @GetMapping("/{id}/turmas")
+    public ResponseEntity buscarTurmas(@PathVariable Long id){
+        Optional<Professor> professor = professorRepository.findById(id);
+
+        List <Turma> turmas = professor.get().getTurmas();
+        return ResponseEntity.ok(turmas);
     }
 }

@@ -1,9 +1,12 @@
 package com.example.etest.controller;
 
 import com.example.etest.controller.form.CriarAlunoForm;
+import com.example.etest.controller.form.CriarTurmaForm;
 import com.example.etest.model.Aluno;
+import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import com.example.etest.repository.AlunoRepository;
+import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,9 @@ public class TurmaController {
 
     @Autowired
     AlunoRepository alunoRepository;
+
+    @Autowired
+    ProfessorRepository professorRepository;
 
     @GetMapping
     public ResponseEntity buscarTodos(){
@@ -38,13 +44,31 @@ public class TurmaController {
     public ResponseEntity adicionar(@RequestBody CriarAlunoForm aluno, @PathVariable Long turmaId){
         //@RequestBody = Pega os dados do corpo e não da url
 
-        Aluno novoAluno = new Aluno(aluno.getNome(), aluno.getEmail(), aluno.getSenha(), aluno.getMatricula());
+        Aluno novoAluno = alunoRepository.findByNome(aluno.getNome());
+
         Optional<Turma> turma = turmaRepository.findById(turmaId);
         List<Aluno> alunos = turma.get().getAlunos();
         alunos.add(novoAluno);
-        novoAluno.getTurmas().add(turma.orElseThrow());
-        alunoRepository.save(novoAluno);
+
+        List<Turma> turmas = novoAluno.getTurmas();
+        turmas.add(turma.get());
+        novoAluno.getTurmas().addAll(turmas);
+
         turmaRepository.save(turma.orElseThrow());
+
+        return ResponseEntity.ok(turma);
+    }
+
+    @PostMapping("create")//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
+    public ResponseEntity criarTurma(@RequestBody CriarTurmaForm turma){
+        //@RequestBody = Pega os dados do corpo e não da url
+
+        Professor professor = professorRepository.findByNome(turma.getProfessor());
+        Turma newTurma = new Turma(null, turma.getNome(), turma.getAvisos());
+        newTurma.setProfessor(professor);
+
+        professor.getTurmas().add(newTurma);
+        turmaRepository.save(newTurma);
 
         return ResponseEntity.ok(turma);
     }

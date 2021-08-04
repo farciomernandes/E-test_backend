@@ -18,14 +18,15 @@ public class Turma implements Serializable {
     private String nome;
     private String avisos;
 
+    @JsonManagedReference()
     @ManyToOne()
     private Professor professor;
 
     @JsonManagedReference()
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
-            joinColumns = @JoinColumn(name = "aluno_id"),
-            inverseJoinColumns = @JoinColumn(name = "turma_id")
+            joinColumns = @JoinColumn(name = "turma_pk"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_pk")
     )
     private List<Aluno> alunos = new ArrayList<>();
 
