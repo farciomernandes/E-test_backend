@@ -36,16 +36,7 @@ public class AlunoController {
         Optional<Aluno> aluno = alunoRepository.findById(id);
         return AlunoDTO.converter(aluno);
     }
-
-    @GetMapping("/{id}/turmas")
-    public ResponseEntity buscarTurmas(@PathVariable Long id){
-        Optional<Aluno> aluno = alunoRepository.findById(id);
-
-        List <Turma> turmas = aluno.get().getTurmas();
-        return ResponseEntity.ok(turmas);
-    }
-
-
+    
     @PostMapping()
     public ResponseEntity adicionar(@RequestBody CriarAlunoForm aluno){
         Aluno novoAluno = new Aluno(aluno.getNome(), aluno.getEmail(), aluno.getSenha(), aluno.getMatricula());

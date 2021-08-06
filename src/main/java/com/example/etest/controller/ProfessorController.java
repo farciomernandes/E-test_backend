@@ -1,5 +1,8 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.ProfessorDTO;
+import com.example.etest.controller.form.CriarProfessorForm;
+import com.example.etest.controller.form.CriarTurmaForm;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import com.example.etest.repository.ProfessorRepository;
@@ -34,5 +37,16 @@ public class ProfessorController {
 
         List <Turma> turmas = professor.get().getTurmas();
         return ResponseEntity.ok(turmas);
+    }
+
+    @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
+    public ResponseEntity criarProfessor(@RequestBody CriarProfessorForm form){
+        //@RequestBody = Pega os dados do corpo e não da url
+
+        Professor professor = new Professor(form.getNome(), form.getEmail(), form.getSenha() , form.getMatricula() );
+
+        professorRepository.save(professor);
+        ProfessorDTO professorConvertido = new ProfessorDTO(professor);
+        return ResponseEntity.ok(professorConvertido);
     }
 }

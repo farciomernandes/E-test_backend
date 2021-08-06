@@ -1,9 +1,7 @@
 package com.example.etest.controller;
 
-import com.example.etest.controller.dto.AlunoDTO;
 import com.example.etest.controller.dto.TurmaDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
-import com.example.etest.controller.form.CriarAlunoForm;
 import com.example.etest.controller.form.CriarTurmaForm;
 import com.example.etest.model.Aluno;
 import com.example.etest.model.Professor;
@@ -12,7 +10,6 @@ import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,14 +30,14 @@ public class TurmaController {
     ProfessorRepository professorRepository;
 
     @GetMapping
-    public ResponseEntity buscarTodos(){
+    public ResponseEntity buscarTodos() {
         List<Turma> turmas = turmaRepository.findAll();
         List<TurmaDTO> turmasConvertidas = TurmaDTO.converterAll(turmas);
         return ResponseEntity.ok(turmasConvertidas);
     }
 
     @GetMapping("/{id}")
-    public TurmaDTO buscarUm(@PathVariable Long id){
+    public TurmaDTO buscarUm(@PathVariable Long id) {
         Optional<Turma> turma = turmaRepository.findById(id);
         Turma convertedTurma = turma.get();
 
@@ -49,7 +46,7 @@ public class TurmaController {
 
     @Transactional
     @PostMapping("/{turmaId}")
-    public TurmaDTO adicionar(@RequestBody AdicionarAlunoForm alunoForm, @PathVariable Long turmaId){
+    public TurmaDTO adicionar(@RequestBody AdicionarAlunoForm alunoForm, @PathVariable Long turmaId) {
         //@RequestBody = Pega os dados do corpo e não da url
         Aluno novoAluno = alunoRepository.findByNome(alunoForm.getNome());
 
@@ -66,17 +63,25 @@ public class TurmaController {
         return TurmaDTO.converter(covertedTurma);
     }
 
-    @PostMapping("create")//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
-    public ResponseEntity criarTurma(@RequestBody CriarTurmaForm turma){
+    @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
+    @Transactional
+    public ResponseEntity criarTurma(@RequestBody CriarTurmaForm turma) {
         //@RequestBody = Pega os dados do corpo e não da url
+        System.out.println("ENTROU AQUI N  " + turma);
 
-        Professor professor = professorRepository.findByNome(turma.getProfessor());
-        Turma newTurma = new Turma(null, turma.getNome(), turma.getAvisos());
-        newTurma.setProfessor(professor);
+        Optional<Professor> searchedProfessor = professorRepository.findById(turma.getIdProfessor());
 
-        professor.getTurmas().add(newTurma);
-        turmaRepository.save(newTurma);
+        if (searchedProfessor.isPresent()) {
+            Professor professor = searchedProfessor.get();
+            Turma newTurma = new Turma(null, turma.getNome(), turma.getAvisos());
+            newTurma.setProfessor(professor);
 
-        return ResponseEntity.ok(turma);
+            professor.getTurmas().add(newTurma);
+            turmaRepository.save(newTurma);
+
+            return ResponseEntity.ok(turma);
+        }
+
+        return ResponseEntity.ok("Erro ao buscar professor");
     }
 }

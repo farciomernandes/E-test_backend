@@ -5,16 +5,12 @@ public class CriarTurmaForm {
 
     private String nome;
     private String avisos;
-    private String professor;
+    private Long idProfessor;
 
-    public CriarTurmaForm() {
-
-    }
-
-    public CriarTurmaForm(String nome, String avisos, String professor) {
+    public CriarTurmaForm(String nome, String avisos, Long idProfessor) {
         this.nome = nome;
         this.avisos = avisos;
-        this.professor = professor;
+        this.idProfessor = idProfessor;
     }
 
 
@@ -26,12 +22,12 @@ public class CriarTurmaForm {
         this.nome = nome;
     }
 
-    public String getProfessor() {
-        return professor;
+    public Long getIdProfessor() {
+        return idProfessor;
     }
 
-    public void setProfessor(String professor) {
-        this.professor = professor;
+    public void setidProfessor(String professor) {
+        this.idProfessor = idProfessor;
     }
 
     public String getAvisos() {

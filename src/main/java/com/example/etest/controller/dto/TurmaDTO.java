@@ -1,14 +1,12 @@
 package com.example.etest.controller.dto;
 
-import com.example.etest.model.Aluno;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.domain.Page;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TurmaDTO {
 
