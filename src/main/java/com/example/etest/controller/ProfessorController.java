@@ -3,6 +3,7 @@ package com.example.etest.controller;
 import com.example.etest.controller.dto.ProfessorDTO;
 import com.example.etest.controller.form.CriarProfessorForm;
 import com.example.etest.controller.form.CriarTurmaForm;
+import com.example.etest.model.Aluno;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import com.example.etest.repository.ProfessorRepository;
@@ -42,6 +43,15 @@ public class ProfessorController {
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
     public ResponseEntity criarProfessor(@RequestBody CriarProfessorForm form){
         //@RequestBody = Pega os dados do corpo e não da url
+        Optional<Professor> emailExiste = professorRepository.findByEmail(form.getEmail());
+        Optional<Professor> matriculaExiste = professorRepository.findByMatricula(form.getMatricula());
+
+        if(emailExiste.isPresent()){
+            return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
+        }
+        if(matriculaExiste.isPresent()){
+            return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
+        }
 
         Professor professor = new Professor(form.getNome(), form.getEmail(), form.getSenha() , form.getMatricula() );
 

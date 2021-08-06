@@ -36,14 +36,22 @@ public class AlunoController {
         Optional<Aluno> aluno = alunoRepository.findById(id);
         return AlunoDTO.converter(aluno);
     }
-    
+
     @PostMapping()
-    public ResponseEntity adicionar(@RequestBody CriarAlunoForm aluno){
-        Aluno novoAluno = new Aluno(aluno.getNome(), aluno.getEmail(), aluno.getSenha(), aluno.getMatricula());
+    public ResponseEntity adicionar(@RequestBody CriarAlunoForm form){
+        Optional<Aluno> emailExiste = alunoRepository.findByEmail(form.getEmail());
+        Optional<Aluno> matriculaExiste = alunoRepository.findByMatricula(form.getMatricula());
+
+        if(emailExiste.isPresent()){
+            return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
+        }else if(matriculaExiste.isPresent()){
+            return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
+        }
+
+        Aluno novoAluno = new Aluno(form.getNome(), form.getEmail(), form.getSenha(), form.getMatricula());
         alunoRepository.save(novoAluno);
 
         return ResponseEntity.ok(novoAluno);
     }
-
 
 }

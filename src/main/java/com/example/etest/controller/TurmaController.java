@@ -46,9 +46,9 @@ public class TurmaController {
 
     @Transactional
     @PostMapping("/{turmaId}")
-    public TurmaDTO adicionar(@RequestBody AdicionarAlunoForm alunoForm, @PathVariable Long turmaId) {
+    public TurmaDTO adicionar(@RequestBody AdicionarAlunoForm form, @PathVariable Long turmaId) {
         //@RequestBody = Pega os dados do corpo e não da url
-        Aluno novoAluno = alunoRepository.findByNome(alunoForm.getNome());
+        Aluno novoAluno = alunoRepository.findByNome(form.getNome());
 
         Optional<Turma> turma = turmaRepository.findById(turmaId);
         List<Aluno> alunos = turma.get().getAlunos();
@@ -65,21 +65,23 @@ public class TurmaController {
 
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
     @Transactional
-    public ResponseEntity criarTurma(@RequestBody CriarTurmaForm turma) {
+    public ResponseEntity criarTurma(@RequestBody CriarTurmaForm form) {
         //@RequestBody = Pega os dados do corpo e não da url
-        System.out.println("ENTROU AQUI N  " + turma);
-
-        Optional<Professor> searchedProfessor = professorRepository.findById(turma.getIdProfessor());
+        Optional<Turma> nomeTurmaExiste = turmaRepository.findByNome(form.getNome());
+        if(nomeTurmaExiste.isEmpty()){
+            return ResponseEntity.status(404).body("Já existe uma turma com esse nome, tente novamente com outro nome!");
+        }
+        Optional<Professor> searchedProfessor = professorRepository.findById(form.getIdProfessor());
 
         if (searchedProfessor.isPresent()) {
             Professor professor = searchedProfessor.get();
-            Turma newTurma = new Turma(null, turma.getNome(), turma.getAvisos());
+            Turma newTurma = new Turma(null, form.getNome(), form.getAvisos());
             newTurma.setProfessor(professor);
 
             professor.getTurmas().add(newTurma);
             turmaRepository.save(newTurma);
 
-            return ResponseEntity.ok(turma);
+            return ResponseEntity.ok(form);
         }
 
         return ResponseEntity.ok("Erro ao buscar professor");
