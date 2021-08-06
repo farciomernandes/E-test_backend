@@ -1,6 +1,5 @@
 package com.example.etest.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -22,7 +21,6 @@ public class Turma implements Serializable {
     @ManyToOne()
     private Professor professor;
 
-    @JsonManagedReference()
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
             joinColumns = @JoinColumn(name = "turma_pk"),

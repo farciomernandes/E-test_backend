@@ -1,8 +1,10 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.AlunoDTO;
+import com.example.etest.controller.dto.TurmaDTO;
 import com.example.etest.controller.form.CriarAlunoForm;
 import com.example.etest.model.Aluno;
-import com.example.etest.model.Professor;
+import org.springframework.data.domain.Page;
 import com.example.etest.model.Turma;
 import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.TurmaRepository;
@@ -23,15 +25,16 @@ public class AlunoController {
     TurmaRepository turmaRepository;
 
     @GetMapping
-    public ResponseEntity buscarTodos(){
-        List<Aluno> alunos = alunoRepository.findAll();
-        return ResponseEntity.ok(alunos);
+    public ResponseEntity lista(){
+        List<Aluno> alunos =  alunoRepository.findAll();
+        List<AlunoDTO> alunosConvertidos = AlunoDTO.converterAll(alunos);
+        return ResponseEntity.ok(alunosConvertidos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity buscarUm(@PathVariable Long id){
+    public AlunoDTO buscarUm(@PathVariable Long id){
         Optional<Aluno> aluno = alunoRepository.findById(id);
-        return ResponseEntity.ok(aluno);
+        return AlunoDTO.converter(aluno);
     }
 
     @GetMapping("/{id}/turmas")
@@ -39,7 +42,6 @@ public class AlunoController {
         Optional<Aluno> aluno = alunoRepository.findById(id);
 
         List <Turma> turmas = aluno.get().getTurmas();
-        System.out.println("SACA SO:  " + turmas.toString());
         return ResponseEntity.ok(turmas);
     }
 

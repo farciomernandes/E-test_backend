@@ -4,7 +4,6 @@ import com.example.etest.model.Aluno;
 
 public class CriarAlunoForm {
 
-
         private String nome;
         private String email;
         private String senha;
