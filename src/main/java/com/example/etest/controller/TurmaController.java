@@ -44,23 +44,28 @@ public class TurmaController {
         return TurmaDTO.converter(convertedTurma);
     }
 
-    @Transactional
     @PostMapping("/{turmaId}")
-    public TurmaDTO adicionar(@RequestBody AdicionarAlunoForm form, @PathVariable Long turmaId) {
-        //@RequestBody = Pega os dados do corpo e não da url
-        Aluno novoAluno = alunoRepository.findByNome(form.getNome());
+    @Transactional
+    public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form,
+                                         @PathVariable Long turmaId) {
+        System.out.println("ELE ENTROU AQUI");
+        Optional<Aluno> alunoMatricula = alunoRepository.findByMatricula(form.getMatricula());
+        if(alunoMatricula.isPresent()){
+            Optional<Turma> turma = turmaRepository.findById(turmaId);
+            List<Aluno> alunos = turma.get().getAlunos();
+            alunos.add(alunoMatricula.get());
 
-        Optional<Turma> turma = turmaRepository.findById(turmaId);
-        List<Aluno> alunos = turma.get().getAlunos();
-        alunos.add(novoAluno);
+            System.out.println("ENCONTROU O ALUNO");
 
-        List<Turma> turmas = novoAluno.getTurmas();
-        turmas.add(turma.get());
-        novoAluno.getTurmas().addAll(turmas);
+            List<Turma> turmas = alunoMatricula.get().getTurmas();
+            turmas.add(turma.get());
+            alunoMatricula.get().getTurmas().addAll(turmas);
 
-        Turma covertedTurma = turma.get();
-        turmaRepository.save(covertedTurma);
-        return TurmaDTO.converter(covertedTurma);
+            Turma covertedTurma = turma.get();
+            turmaRepository.save(covertedTurma);
+            return ResponseEntity.ok(TurmaDTO.converter(covertedTurma));
+        }
+        return ResponseEntity.status(404).body("O numero da matricula não corresponde a nenhum aluno cadastrado!");
     }
 
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
@@ -68,7 +73,7 @@ public class TurmaController {
     public ResponseEntity criarTurma(@RequestBody CriarTurmaForm form) {
         //@RequestBody = Pega os dados do corpo e não da url
         Optional<Turma> nomeTurmaExiste = turmaRepository.findByNome(form.getNome());
-        if(nomeTurmaExiste.isEmpty()){
+        if(nomeTurmaExiste.isPresent()){
             return ResponseEntity.status(404).body("Já existe uma turma com esse nome, tente novamente com outro nome!");
         }
         Optional<Professor> searchedProfessor = professorRepository.findById(form.getIdProfessor());

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
-    Aluno findByNome(String nome);
+    Optional<Aluno> findByNome(String nome);
     Optional<Aluno> findByEmail(String email);
     Optional<Aluno> findByMatricula(String matricula);
 

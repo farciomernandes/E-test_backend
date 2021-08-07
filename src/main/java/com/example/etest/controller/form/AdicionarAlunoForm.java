@@ -4,20 +4,10 @@ import com.example.etest.model.Aluno;
 
 public class AdicionarAlunoForm {
 
-        private String nome;
         private String matricula;
 
-    public AdicionarAlunoForm(String nome, String matricula) {
-        this.nome = nome;
+    public AdicionarAlunoForm(String matricula) {
         this.matricula = matricula;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getMatricula() {
