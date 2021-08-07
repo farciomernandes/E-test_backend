@@ -1,15 +1,8 @@
-package com.example.etest.model;
+package com.example.etest.controller.form;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
-@Entity
-public class Questao implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CriarQuestaoForm {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String descricao;
 
     private String alternativa1;
@@ -23,11 +16,8 @@ public class Questao implements Serializable {
     private String assunto;
     private Integer nivel;
 
-    public Questao() {
-    }
+    public CriarQuestaoForm(String descricao, String alternativa1, String alternativa2, String alternativa3, String alternativa4, String correta, String disciplina, String unidade, String assunto, Integer nivel) {
 
-    public Questao(Long id, String descricao, String alternativa1, String alternativa2, String alternativa3, String alternativa4, String correta, String disciplina, String unidade, String assunto, Integer nivel) {
-        this.id = id;
         this.descricao = descricao;
         this.alternativa1 = alternativa1;
         this.alternativa2 = alternativa2;
@@ -38,23 +28,7 @@ public class Questao implements Serializable {
         this.unidade = unidade;
         this.assunto = assunto;
         this.nivel = nivel;
-    }
 
-    public void setDisciplina(String disciplina){
-        this.disciplina = disciplina;
-    }
-
-    public String getDisciplina(){
-        return this.disciplina;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDescricao() {
@@ -63,30 +37,6 @@ public class Questao implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public String getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(String unidade) {
-        this.unidade = unidade;
-    }
-
-    public String getAssunto() {
-        return assunto;
-    }
-
-    public void setAssunto(String assunto) {
-        this.assunto = assunto;
-    }
-
-    public Integer getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
     }
 
     public String getAlternativa1() {
@@ -129,17 +79,35 @@ public class Questao implements Serializable {
         this.correta = correta;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Questao questao = (Questao) o;
-        return id.equals(questao.id);
+    public String getDisciplina() {
+        return disciplina;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
     }
 
+    public String getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+
+    public String getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(String assunto) {
+        this.assunto = assunto;
+    }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
+    }
 }
