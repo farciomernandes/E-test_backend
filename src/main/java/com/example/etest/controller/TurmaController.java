@@ -40,7 +40,6 @@ public class TurmaController {
     public TurmaDTO buscarUm(@PathVariable Long id) {
         Optional<Turma> turma = turmaRepository.findById(id);
         Turma convertedTurma = turma.get();
-
         return TurmaDTO.converter(convertedTurma);
     }
 

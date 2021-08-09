@@ -15,6 +15,8 @@ public class TurmaDTO {
     private String avisos;
     private Professor professor;
     private List<String> alunos = new ArrayList<>();
+    private List<String> avaliacoes = new ArrayList<>();
+
 
     public TurmaDTO(Turma turma) {
         this.id = turma.getId();
@@ -24,10 +26,9 @@ public class TurmaDTO {
         turma.getAlunos().forEach(aluno ->{
             this.alunos.add(aluno.getNome());
         });
-    }
-
-    public static Page<TurmaDTO> converteAll(Page<Turma> turmas) {
-        return turmas.map(TurmaDTO::new);
+        turma.getAvaliacao().forEach(avaliacao ->{
+            this.avaliacoes.add(avaliacao.getNome());
+        });
     }
 
     public Long getId() {
@@ -81,5 +82,13 @@ public class TurmaDTO {
         });
 
         return turmas;
+    }
+
+    public List<String> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<String> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 }
