@@ -23,8 +23,8 @@ public class Turma implements Serializable {
 
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
-            joinColumns = @JoinColumn(name = "turma_pk"),
-            inverseJoinColumns = @JoinColumn(name = "aluno_pk")
+            joinColumns = @JoinColumn(name = "turma_aluno_pk"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
     )
     private List<Aluno> alunos = new ArrayList<>();
 
@@ -113,4 +113,5 @@ public class Turma implements Serializable {
                 ", avaliacao=" + avaliacao +
                 '}';
     }
+
 }

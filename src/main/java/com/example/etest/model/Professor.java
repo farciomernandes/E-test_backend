@@ -18,7 +18,6 @@ public class Professor implements Serializable {
     private String senha;
     private String matricula;
 
-    @JsonBackReference()
     @OneToMany()
     private List<Turma> turmas = new ArrayList<>();
 

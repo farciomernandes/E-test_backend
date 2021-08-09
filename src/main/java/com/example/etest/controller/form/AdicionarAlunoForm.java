@@ -1,20 +1,29 @@
 package com.example.etest.controller.form;
 
-import com.example.etest.model.Aluno;
 
 public class AdicionarAlunoForm {
 
-        private String matricula;
+    private String nome;
+    private Long id;
 
-    public AdicionarAlunoForm(String matricula) {
-        this.matricula = matricula;
+    public AdicionarAlunoForm(String nome, Long id) {
+        this.nome = nome;
+        this.id = id;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public String getNome() {
+        return nome;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

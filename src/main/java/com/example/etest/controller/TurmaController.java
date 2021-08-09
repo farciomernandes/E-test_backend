@@ -1,5 +1,7 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.AlunoDTO;
+import com.example.etest.controller.dto.ProfessorDTO;
 import com.example.etest.controller.dto.TurmaDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
 import com.example.etest.controller.form.CriarTurmaForm;
@@ -43,28 +45,17 @@ public class TurmaController {
         return TurmaDTO.converter(convertedTurma);
     }
 
-    @PostMapping("/{turmaId}")
     @Transactional
-    public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form,
-                                         @PathVariable Long turmaId) {
-        System.out.println("ELE ENTROU AQUI");
-        Optional<Aluno> alunoMatricula = alunoRepository.findByMatricula(form.getMatricula());
-        if(alunoMatricula.isPresent()){
-            Optional<Turma> turma = turmaRepository.findById(turmaId);
-            List<Aluno> alunos = turma.get().getAlunos();
-            alunos.add(alunoMatricula.get());
-
-            System.out.println("ENCONTROU O ALUNO");
-
-            List<Turma> turmas = alunoMatricula.get().getTurmas();
-            turmas.add(turma.get());
-            alunoMatricula.get().getTurmas().addAll(turmas);
-
-            Turma covertedTurma = turma.get();
-            turmaRepository.save(covertedTurma);
-            return ResponseEntity.ok(TurmaDTO.converter(covertedTurma));
+    @PostMapping("/adicionar")
+    public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form ) {
+        Optional<Aluno> alunoExist = alunoRepository.findByNome(form.getNome());
+        if(alunoExist.isPresent()){
+            Optional<Turma> turma = turmaRepository.findById(form.getId());
+            turma.get().getAlunos().add(alunoExist.get());
+            alunoExist.get().getTurmas().add(turma.get());
+            return ResponseEntity.ok(AlunoDTO.converter(alunoExist.get()));
         }
-        return ResponseEntity.status(404).body("O numero da matricula não corresponde a nenhum aluno cadastrado!");
+        return ResponseEntity.status(404).body("Aluno nao encontrado!");
     }
 
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
@@ -84,8 +75,8 @@ public class TurmaController {
 
             professor.getTurmas().add(newTurma);
             turmaRepository.save(newTurma);
-
-            return ResponseEntity.ok(form);
+            professorRepository.save(professor);
+            return ResponseEntity.ok(ProfessorDTO.converter(professor));
         }
 
         return ResponseEntity.ok("Erro ao buscar professor");

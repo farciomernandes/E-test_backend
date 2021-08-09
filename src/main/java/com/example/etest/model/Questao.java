@@ -1,5 +1,8 @@
 package com.example.etest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +27,14 @@ public class Questao implements Serializable {
     private String unidade;
     private String assunto;
     private Integer nivel;
+
+    @JsonBackReference()
+    @ManyToMany()
+    @JoinTable(name="QUESTAO_AVALIACAO",
+            joinColumns = @JoinColumn(name = "questao_avaliaca_pk"),
+            inverseJoinColumns = @JoinColumn(name = "avaliacao_questao_pk")
+    )
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     public Questao() {
     }
@@ -144,4 +155,11 @@ public class Questao implements Serializable {
         return Objects.hash(id);
     }
 
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
 }

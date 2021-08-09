@@ -14,6 +14,8 @@ public class AlunoDTO {
     private String matricula;
 
     private List<String> turmas = new ArrayList<>();
+    private List<String> avaliacoes = new ArrayList<>();
+
 
 
     public AlunoDTO(Aluno aluno) {
@@ -23,6 +25,9 @@ public class AlunoDTO {
         this.matricula = aluno.getMatricula();
         aluno.getTurmas().forEach(turma ->{
             this.turmas.add(turma.getNome());
+        });
+        aluno.getAvaliacoes().forEach(av ->{
+            this.avaliacoes.add(av.getNome());
         });
     }
 
@@ -80,7 +85,15 @@ public class AlunoDTO {
         return alunosFormatados;
     }
 
-    private static AlunoDTO converter(Aluno aluno) {
+    public static AlunoDTO converter(Aluno aluno) {
         return new AlunoDTO(aluno);
+    }
+
+    public List<String> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<String> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 }

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -21,6 +23,14 @@ public class Avaliacao implements Serializable {
     @JsonManagedReference
     @ManyToOne()
     private Turma turma;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "avaliacoes")
+    private List<Aluno> alunos = new ArrayList<>();
+
+    @JsonManagedReference()
+    @ManyToMany(mappedBy = "avaliacoes")
+    private List<Questao> questoes = new ArrayList<>();
 
     public Avaliacao(){
     }
@@ -71,5 +81,22 @@ public class Avaliacao implements Serializable {
 
     public void setTurma(Turma turma) {
         this.turma = turma;
+    }
+
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    public List<Questao> getQuestoes() {
+        return questoes;
+    }
+
+    public void setQuestoes(List<Questao> questoes) {
+        this.questoes = questoes;
     }
 }

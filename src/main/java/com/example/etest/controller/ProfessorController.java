@@ -23,21 +23,13 @@ public class ProfessorController {
     @GetMapping
     public ResponseEntity buscarTodos(){
         List<Professor> professores = professorRepository.findAll();
-        return ResponseEntity.ok(professores);
+        return ResponseEntity.ok(ProfessorDTO.converterAll(professores));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity buscarUm(@PathVariable Long id){
         Optional<Professor> professor = professorRepository.findById(id);
-        return ResponseEntity.ok(professor);
-    }
-
-    @GetMapping("/{id}/turmas")
-    public ResponseEntity buscarTurmas(@PathVariable Long id){
-        Optional<Professor> professor = professorRepository.findById(id);
-
-        List <Turma> turmas = professor.get().getTurmas();
-        return ResponseEntity.ok(turmas);
+        return ResponseEntity.ok(ProfessorDTO.converter(professor.get()));
     }
 
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
@@ -45,7 +37,6 @@ public class ProfessorController {
         //@RequestBody = Pega os dados do corpo e não da url
         Optional<Professor> emailExiste = professorRepository.findByEmail(form.getEmail());
         Optional<Professor> matriculaExiste = professorRepository.findByMatricula(form.getMatricula());
-
         if(emailExiste.isPresent()){
             return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
         }
@@ -53,10 +44,9 @@ public class ProfessorController {
             return ResponseEntity.status(404).body("Email ou mátricula já cadastrado!");
         }
 
-        Professor professor = new Professor(form.getNome(), form.getEmail(), form.getSenha() , form.getMatricula() );
+        Professor professor = new Professor(form.getNome(), form.getEmail(), form.getSenha() , form.getMatricula());
 
         professorRepository.save(professor);
-        ProfessorDTO professorConvertido = new ProfessorDTO(professor);
-        return ResponseEntity.ok(professorConvertido);
+        return ResponseEntity.ok(ProfessorDTO.converter(professor));
     }
 }

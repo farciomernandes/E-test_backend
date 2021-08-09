@@ -1,5 +1,6 @@
 package com.example.etest.controller.dto;
 
+import com.example.etest.controller.dto.IntegratedDTO.TurmaProfessorDTO;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ public class TurmaDTO {
     private Long id;
     private String nome;
     private String avisos;
-    private Professor professor;
+    private TurmaProfessorDTO professor;
     private List<String> alunos = new ArrayList<>();
     private List<String> avaliacoes = new ArrayList<>();
 
@@ -22,7 +23,7 @@ public class TurmaDTO {
         this.id = turma.getId();
         this.nome = turma.getNome();
         this.avisos = turma.getAvisos();
-        this.professor = turma.getProfessor();
+        this.professor = TurmaProfessorDTO.converter(turma.getProfessor());
         turma.getAlunos().forEach(aluno ->{
             this.alunos.add(aluno.getNome());
         });
@@ -55,11 +56,11 @@ public class TurmaDTO {
         this.avisos = avisos;
     }
 
-    public Professor getProfessor() {
+    public TurmaProfessorDTO getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Professor professor) {
+    public void setProfessor(TurmaProfessorDTO professor) {
         this.professor = professor;
     }
 
