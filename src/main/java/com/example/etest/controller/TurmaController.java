@@ -49,6 +49,7 @@ public class TurmaController {
     @PostMapping("/adicionar")
     public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form ) {
         Optional<Aluno> alunoExist = alunoRepository.findByNome(form.getNome());
+
         if(alunoExist.isPresent()){
             Optional<Turma> turma = turmaRepository.findById(form.getId());
             turma.get().getAlunos().add(alunoExist.get());
