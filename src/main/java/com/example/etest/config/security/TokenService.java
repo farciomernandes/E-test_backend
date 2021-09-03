@@ -26,7 +26,7 @@ public class TokenService {
 
         return Jwts.builder()
                 //Qual aplicacao esta criando esse token?
-                .setIssuer("API do Fórum Marcio Spring")
+                .setIssuer("API do Etest Marcio")
                 //Para quem é esse token? Converta em string
                 .setSubject(logado.getId().toString())
                 //Quando esse token foi criado?
