@@ -51,11 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //do verbo 'GET' para o endpoint 'topicos e topicos/*'
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
-                .antMatchers(HttpMethod.GET, "/user").hasRole("ALUNO")
-                .antMatchers(HttpMethod.GET, "/user/*").hasRole("ALUNO")
                 .antMatchers(HttpMethod.POST, "/autenticacao").permitAll()
-                //hasRole: Só pode chamar essa requisicao quem tem o perfil "MODERADOR"
-                //.antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")
+                .antMatchers(HttpMethod.GET, "/user").hasRole("PROFESSOR")
+                .antMatchers(HttpMethod.GET, "/user/*").hasRole("PROFESSOR")
                 //Avisa que quaisquer outras requisições é preciso o usuário estar autenticado
                 .anyRequest().authenticated()
                 //desabilita a protecao contra o ataque hacker: cross site request forgery

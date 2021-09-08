@@ -92,8 +92,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-
-
         return nome;
     }
 
@@ -106,22 +104,16 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-
-
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-
-
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-
-
         return true;
     }
 

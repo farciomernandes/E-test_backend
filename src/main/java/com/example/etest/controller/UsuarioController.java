@@ -2,8 +2,8 @@ package com.example.etest.controller;
 
 
 import com.example.etest.controller.form.LoginForm;
+import com.example.etest.controller.form.AtualizarUsuarioForm;
 import com.example.etest.model.Perfil;
-import com.example.etest.model.Turma;
 import com.example.etest.model.Usuario;
 import com.example.etest.repository.PerfilRepository;
 import com.example.etest.repository.UsuarioRepository;
@@ -70,5 +70,28 @@ public class UsuarioController {
     public ResponseEntity buscarUm(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         return ResponseEntity.ok(usuario);
+    }
+
+    @PutMapping ("/{id}")//Configurar front-end paara enviar todos os dados
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody AtualizarUsuarioForm form, @PathVariable Long id) {
+        Optional<Usuario> user = usuarioRepository.findById(id);
+        String password = new BCryptPasswordEncoder().encode(form.getSenha());
+
+        user.get().setName(form.getNome());
+        user.get().setPassword(password);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    public ResponseEntity remover(@PathVariable Long id){
+        Optional<Usuario> optional = usuarioRepository.findById(id);
+        if(optional.isPresent()){
+            usuarioRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
