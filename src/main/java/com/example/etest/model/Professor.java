@@ -13,8 +13,11 @@ public class Professor extends Usuario {
     @OneToMany(mappedBy = "professor")
     private List<Turma> turmas;
 
+    private String matricula;
+
     public Professor(String nome, String email, String senha, String matricula) {
         super(nome, email, senha, matricula);
+        this.matricula = matricula;
         this.turmas = turmas;
     }
 
@@ -35,5 +38,15 @@ public class Professor extends Usuario {
 
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
+    }
+
+    @Override
+    public String getMatricula() {
+        return matricula;
+    }
+
+    @Override
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }

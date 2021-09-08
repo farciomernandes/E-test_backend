@@ -18,14 +18,14 @@ public class Turma implements Serializable {
     private String avisos;
 
     @ManyToOne()
-    private Usuario professor;
+    private Professor professor;
 
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
             joinColumns = @JoinColumn(name = "turma_aluno_pk"),
             inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
     )
-    private List<Usuario> alunos = new ArrayList<>();
+    private List<Aluno> alunos = new ArrayList<>();
 
     @JsonBackReference
     @OneToMany()
@@ -77,19 +77,19 @@ public class Turma implements Serializable {
         this.avisos = avisos;
     }
 
-    public Usuario getProfessor() {
+    public Professor getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Usuario professor) {
+    public void setProfessor(Professor professor) {
         this.professor = professor;
     }
 
-    public List<Usuario> getAlunos() {
+    public List<Aluno> getAlunos() {
         return alunos;
     }
 
-    public void setAlunos(List<Usuario> alunos) {
+    public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
     }
 
@@ -99,18 +99,6 @@ public class Turma implements Serializable {
 
     public void setAvaliacao(List<Avaliacao> avaliacao) {
         this.avaliacao = avaliacao;
-    }
-
-    @Override
-    public String toString() {
-        return "Turma{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", avisos='" + avisos + '\'' +
-                ", professor=" + professor +
-                ", alunos=" + alunos +
-                ", avaliacao=" + avaliacao +
-                '}';
     }
 
 }

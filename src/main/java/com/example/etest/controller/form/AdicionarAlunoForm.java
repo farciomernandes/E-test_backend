@@ -4,11 +4,14 @@ package com.example.etest.controller.form;
 public class AdicionarAlunoForm {
 
     private String matricula;
-    private Long id;
+    private Long idTurma;
 
-    public AdicionarAlunoForm(String matricula, Long id) {
+    public AdicionarAlunoForm(String matricula, Long idTurma) {
         this.matricula = matricula;
-        this.id = id;
+        this.idTurma = idTurma;
+    }
+
+    public AdicionarAlunoForm() {
     }
 
     public String getMatricula() {
@@ -19,11 +22,11 @@ public class AdicionarAlunoForm {
         this.matricula = matricula;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdTurma() {
+        return idTurma;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdTurma(Long idTurma) {
+        this.idTurma = idTurma;
     }
 }

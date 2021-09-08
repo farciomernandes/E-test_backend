@@ -1,10 +1,13 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.TurmaRetornoDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
 import com.example.etest.controller.form.CriarTurmaForm;
+import com.example.etest.model.Aluno;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
 import com.example.etest.model.Usuario;
+import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.TurmaRepository;
 import com.example.etest.repository.UsuarioRepository;
@@ -26,61 +29,81 @@ public class TurmaController {
     UsuarioRepository usuarioRepository;
 
     @Autowired
+    AlunoRepository alunoRepository;
+
+    @Autowired
     ProfessorRepository professorRepository;
 
 
     @GetMapping
     public ResponseEntity buscarTodos() {
         List<Turma> turmas = turmaRepository.findAll();
-        return ResponseEntity.ok(turmas);
+        List<TurmaRetornoDTO> convertedTurmas = new TurmaRetornoDTO().converter(turmas);
+
+        return ResponseEntity.ok(convertedTurmas);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity buscarUm(@PathVariable Long id) {
         Optional<Turma> turma = turmaRepository.findById(id);
-        Turma convertedTurma = turma.get();
+        TurmaRetornoDTO convertedTurma = new TurmaRetornoDTO(turma.get());
         return ResponseEntity.ok(convertedTurma);
     }
 
     @Transactional
     @PostMapping("/adicionar")
     public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form ) {
-        Optional<Usuario> alunoExist = usuarioRepository.findByMatricula(form.getMatricula());
+
+        Optional<Aluno> alunoExist = alunoRepository.findByMatricula(form.getMatricula());
 
         if(alunoExist.isPresent() && alunoExist.get().getPerfis().get(0).getNome().equals("ROLE_ALUNO")){
 
-            Optional<Turma> turma = turmaRepository.findById(form.getId());
+            Optional<Turma> turma = turmaRepository.findById(form.getIdTurma());
             turma.get().getAlunos().add(alunoExist.get());
-
-            //alunoExist.get().get().add(turma.get());
-
-            return ResponseEntity.ok(alunoExist.get());
+            alunoExist.get().getTurmas().add(turma.get());
+            return ResponseEntity.ok(new TurmaRetornoDTO(turma.get()));
 
         }
         return ResponseEntity.status(404).body("Aluno nao encontrado!");
     }
 
     @PostMapping()//O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
-    @Transactional
     public ResponseEntity criarTurma(@RequestBody CriarTurmaForm form) {
         //@RequestBody = Pega os dados do corpo e não da url
         Optional<Turma> nomeTurmaExiste = turmaRepository.findByNome(form.getNome());
         if(nomeTurmaExiste.isPresent()){
             return ResponseEntity.status(404).body("Já existe uma turma com esse nome, tente novamente com outro nome!");
         }
+
         Optional<Professor> searchedProfessor = professorRepository.findByMatricula(form.getMatricula());
 
         if (searchedProfessor.isPresent()) {
             Professor professor = searchedProfessor.get();
+
             Turma newTurma = new Turma(null, form.getNome(), form.getAvisos());
             newTurma.setProfessor(professor);
 
             professor.getTurmas().add(newTurma);
+
             turmaRepository.save(newTurma);
+
             professorRepository.save(professor);
-            return ResponseEntity.ok(professor);
+
+            return ResponseEntity.ok(new TurmaRetornoDTO(newTurma));
         }
 
         return ResponseEntity.ok("Erro ao buscar professor");
+    }
+
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity remover(@PathVariable Long id){
+        Optional<Turma> optional = turmaRepository.findById(id);
+        if(optional.isPresent()){
+            turmaRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

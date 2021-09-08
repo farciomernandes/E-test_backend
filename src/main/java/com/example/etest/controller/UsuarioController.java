@@ -1,11 +1,15 @@
 package com.example.etest.controller;
 
 
+import com.example.etest.controller.dto.ProfessorDTO;
 import com.example.etest.controller.form.LoginForm;
 import com.example.etest.controller.form.AtualizarUsuarioForm;
+import com.example.etest.model.Aluno;
 import com.example.etest.model.Perfil;
+import com.example.etest.model.Professor;
 import com.example.etest.model.Usuario;
 import com.example.etest.repository.PerfilRepository;
+import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +31,9 @@ public class UsuarioController {
     UsuarioRepository usuarioRepository;
 
     @Autowired
+    ProfessorRepository professorRepository;
+
+    @Autowired
     PerfilRepository perfilRepository;
 
     @PostMapping()
@@ -36,40 +43,44 @@ public class UsuarioController {
         form.setSenha(password);
 
         Optional<Usuario> userExist = usuarioRepository.findByMatricula(form.getMatricula());
+        Usuario user;
 
         if(userExist.isPresent()){
-            System.out.println("ELE ENCONTORU UM IGUAL, POR ISSO NÃO CRIOU");
             return ResponseEntity.status(404).body("Já existe um usuário cadastrado com essa matrícula!");
         }
         else{
-            System.out.println("ELE NÃO ENCONTORU UM IGUAL, POR ISSO VAI CRIAR");
-            Usuario user = usuarioRepository.save(new Usuario(form.getNome(), form.getMatricula(), form.getSenha(), form.getMatricula()));
-
             if(form.getTipo().equals("Professor")){
+                user = new Professor(form.getNome(), form.getMatricula(), form.getSenha(), form.getMatricula());
+                usuarioRepository.save(user);
+
                 Optional<Perfil> roleProfessor = perfilRepository.findByNome("ROLE_PROFESSOR");
-                System.out.println("CHEGOU AQUI" + roleProfessor.get());
+
                 user.getPerfis().addAll(Arrays.asList(roleProfessor.get()));
-                System.out.println("VEIO ATE O FIM DO PROFESSOR ");
+
             }else{
-                System.out.println("veio pra role aluno");
+
+                user = new Aluno(form.getNome(), form.getMatricula(), form.getSenha(), form.getMatricula());
+                usuarioRepository.save(user);
+
                 Optional<Perfil> roleAluno = perfilRepository.findByNome("ROLE_ALUNO");
                 user.getPerfis().addAll(Arrays.asList(roleAluno.get()));
+                return ResponseEntity.ok(user);
             }
-
             return ResponseEntity.ok(user);
         }
     }
 
-    @GetMapping
-    public ResponseEntity buscarTodos() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        return ResponseEntity.ok(usuarios);
+
+    @GetMapping("/professor")
+    public List<ProfessorDTO> buscarTodos() {
+        List<Professor> usuarios = professorRepository.findAll();
+        return ProfessorDTO.converter(usuarios);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/professor/{id}")
     public ResponseEntity buscarUm(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return ResponseEntity.ok(usuario);
+        Optional<Professor> usuario = professorRepository.findById(id);
+        return ResponseEntity.ok(new ProfessorDTO(usuario.get()));
     }
 
     @PutMapping ("/{id}")//Configurar front-end paara enviar todos os dados

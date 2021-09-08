@@ -66,7 +66,7 @@ public class AvaliacaoController {
         Optional<Aluno> alunoExist = alunoRepository.findByMatricula(form.getMatricula());
 
         if(alunoExist.isPresent()){
-            Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getId());
+            Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getIdTurma());
             avaliacao.get().getAlunos().add(alunoExist.get());
 
             alunoExist.get().getAvaliacoes().add(avaliacao.get());

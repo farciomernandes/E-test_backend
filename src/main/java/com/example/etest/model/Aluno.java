@@ -2,6 +2,7 @@ package com.example.etest.model;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,14 +10,24 @@ import java.util.List;
 public class Aluno extends Usuario {
 
     @ManyToMany(mappedBy = "alunos", cascade = CascadeType.MERGE)
-    private List<Avaliacao> avaliacoes;
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
             joinColumns = @JoinColumn(name = "turma_aluno_pk"),
             inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
     )
-    private List<Turma> turmas;
+    private List<Turma> turmas = new ArrayList<>();
+
+    private String matricula;
+
+    public Aluno(String nome, String email, String senha, String matricula) {
+        super(nome, email, senha, matricula);
+        this.matricula = matricula;
+    }
+
+    public Aluno() {
+    }
 
     public List<Avaliacao> getAvaliacoes() {
         return avaliacoes;
@@ -32,5 +43,15 @@ public class Aluno extends Usuario {
 
     public void setTurmas(List<Turma> turmas) {
         this.turmas = turmas;
+    }
+
+    @Override
+    public String getMatricula() {
+        return matricula;
+    }
+
+    @Override
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }
