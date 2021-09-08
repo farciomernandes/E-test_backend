@@ -5,8 +5,13 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+
+
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,28 +25,63 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    private List<Perfil> perfis = new ArrayList<>();
+
     private String nome;
     private String matricula;
     private String senha;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany
-    private List<Perfil> perfils;
-
-
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha, String matricula) {
         this.setName(nome);
         this.setMatricula(email);
         this.setPassword(senha);
+        this.setMatricula(matricula);
     }
 
     public Usuario() {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return nome;
+    }
+
+    public void setName(String name) {
+        this.nome = name;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public void setPassword(String senha) {
+        this.senha = senha;
+    }
+
+    public List<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.perfils;
+        return this.perfis;
     }
 
     @Override
@@ -85,39 +125,6 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return nome;
-    }
-
-    public void setName(String name) {
-        this.nome = name;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
-    public void setPassword(String senha) {
-        this.senha = senha;
-    }
-
-    public List<Perfil> getPerfils() {
-        return perfils;
-    }
-
-    public void setPerfils(List<Perfil> perfils) {
-        this.perfils = perfils;
-    }
 }

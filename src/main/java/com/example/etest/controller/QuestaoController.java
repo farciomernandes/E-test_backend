@@ -1,13 +1,8 @@
 package com.example.etest.controller;
 
-import com.example.etest.controller.dto.AlunoDTO;
-import com.example.etest.controller.form.CriarAlunoForm;
 import com.example.etest.controller.form.CriarQuestaoForm;
-import com.example.etest.model.Aluno;
 import com.example.etest.model.Questao;
-import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.QuestaoRepository;
-import com.example.etest.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

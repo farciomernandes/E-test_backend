@@ -1,8 +1,5 @@
 package com.example.etest.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,15 +17,18 @@ public class Avaliacao implements Serializable {
     private Date dataProva;
     private Double nota;
 
-    @JsonManagedReference
     @ManyToOne()
     private Turma turma;
 
-    @JsonBackReference
-    @ManyToMany(mappedBy = "avaliacoes")
-    private List<Aluno> alunos = new ArrayList<>();
+    @ManyToOne()
+    private Professor autor;
 
-    @JsonManagedReference()
+    @ManyToMany
+    @JoinTable(name = "aluno_avaliacao",
+            joinColumns = @JoinColumn(name = "avaliacao_id"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_id"))
+    private List<Aluno> alunos;
+
     @ManyToMany(mappedBy = "avaliacoes")
     private List<Questao> questoes = new ArrayList<>();
 
@@ -83,6 +83,13 @@ public class Avaliacao implements Serializable {
         this.turma = turma;
     }
 
+    public Professor getAutor() {
+        return autor;
+    }
+
+    public void setPAutor(Professor autor) {
+        this.autor = autor;
+    }
 
     public List<Aluno> getAlunos() {
         return alunos;
@@ -98,5 +105,9 @@ public class Avaliacao implements Serializable {
 
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
+    }
+
+    public void setAutor(Professor autor) {
+        this.autor = autor;
     }
 }

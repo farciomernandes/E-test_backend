@@ -1,7 +1,5 @@
 package com.example.etest.controller.form;
 
-import com.example.etest.model.Aluno;
-
 public class CriarAlunoForm {
 
         private String nome;
@@ -41,8 +39,4 @@ public class CriarAlunoForm {
         this.matricula = matricula;
     }
 
-    public Aluno converter() {
-        Aluno aluno = new Aluno(getNome(), getEmail(), getSenha(), getMatricula());
-        return aluno;
-    }
 }

@@ -4,15 +4,17 @@ package com.example.etest.controller.form;
 public class CriarTurmaForm {
 
     private String nome;
+    private String matricula;
     private String avisos;
-    private Long idProfessor;
 
-    public CriarTurmaForm(String nome, String avisos, Long idProfessor) {
+    public CriarTurmaForm(String nome, String matricula, String avisos) {
         this.nome = nome;
+        this.matricula = matricula;
         this.avisos = avisos;
-        this.idProfessor = idProfessor;
     }
 
+    public CriarTurmaForm() {
+    }
 
     public String getNome() {
         return nome;
@@ -22,12 +24,12 @@ public class CriarTurmaForm {
         this.nome = nome;
     }
 
-    public Long getIdProfessor() {
-        return idProfessor;
+    public String getMatricula() {
+        return matricula;
     }
 
-    public void setidProfessor(String professor) {
-        this.idProfessor = idProfessor;
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public String getAvisos() {

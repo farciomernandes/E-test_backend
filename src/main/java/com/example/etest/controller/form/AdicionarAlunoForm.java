@@ -3,20 +3,20 @@ package com.example.etest.controller.form;
 
 public class AdicionarAlunoForm {
 
-    private String nome;
+    private String matricula;
     private Long id;
 
-    public AdicionarAlunoForm(String nome, Long id) {
-        this.nome = nome;
+    public AdicionarAlunoForm(String matricula, Long id) {
+        this.matricula = matricula;
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getMatricula() {
+        return matricula;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public Long getId() {

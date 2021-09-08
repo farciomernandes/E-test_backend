@@ -50,8 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //Essa configuração, ela autoriza metodos request
         //do verbo 'GET' para o endpoint 'topicos e topicos/*'
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/cadastro").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/user").hasRole("ALUNO")
+                .antMatchers(HttpMethod.GET, "/user/*").hasRole("ALUNO")
                 .antMatchers(HttpMethod.POST, "/autenticacao").permitAll()
                 //hasRole: Só pode chamar essa requisicao quem tem o perfil "MODERADOR"
                 //.antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")

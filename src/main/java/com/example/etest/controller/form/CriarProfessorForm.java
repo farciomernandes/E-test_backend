@@ -1,7 +1,5 @@
 package com.example.etest.controller.form;
 
-import com.example.etest.model.Aluno;
-
 public class CriarProfessorForm {
 
     private String nome;

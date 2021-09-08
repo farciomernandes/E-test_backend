@@ -1,6 +1,5 @@
 package com.example.etest.repository;
 
-import com.example.etest.model.Aluno;
 import com.example.etest.model.Turma;
 import org.springframework.data.jpa.repository.JpaRepository;
 

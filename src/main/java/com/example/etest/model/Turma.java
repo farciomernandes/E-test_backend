@@ -1,7 +1,6 @@
 package com.example.etest.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,14 +18,14 @@ public class Turma implements Serializable {
     private String avisos;
 
     @ManyToOne()
-    private Professor professor;
+    private Usuario professor;
 
     @ManyToMany()
     @JoinTable(name="TURMA_ALUNO",
             joinColumns = @JoinColumn(name = "turma_aluno_pk"),
             inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
     )
-    private List<Aluno> alunos = new ArrayList<>();
+    private List<Usuario> alunos = new ArrayList<>();
 
     @JsonBackReference
     @OneToMany()
@@ -78,19 +77,19 @@ public class Turma implements Serializable {
         this.avisos = avisos;
     }
 
-    public Professor getProfessor() {
+    public Usuario getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Professor professor) {
+    public void setProfessor(Usuario professor) {
         this.professor = professor;
     }
 
-    public List<Aluno> getAlunos() {
+    public List<Usuario> getAlunos() {
         return alunos;
     }
 
-    public void setAlunos(List<Aluno> alunos) {
+    public void setAlunos(List<Usuario> alunos) {
         this.alunos = alunos;
     }
 

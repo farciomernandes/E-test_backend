@@ -60,4 +60,15 @@ public class LoginForm {
     public UsernamePasswordAuthenticationToken converter(){
         return new UsernamePasswordAuthenticationToken(matricula, senha);
     }
+
+    @Override
+    public String toString() {
+        return "LoginForm{" +
+                "matricula='" + matricula + '\'' +
+                ", senha='" + senha + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

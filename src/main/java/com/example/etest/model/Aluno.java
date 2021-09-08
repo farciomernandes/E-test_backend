@@ -1,97 +1,29 @@
 package com.example.etest.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Entity
-public class Aluno implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Aluno extends Usuario {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String email;
-    private String senha;
-    private String matricula;
+    @ManyToMany(mappedBy = "alunos", cascade = CascadeType.MERGE)
+    private List<Avaliacao> avaliacoes;
 
-    @ManyToMany(mappedBy = "alunos")
-    private List<Turma> turmas = new ArrayList<>();
-
-    @JsonManagedReference
     @ManyToMany()
-    @JoinTable(name="ALUNO_AVALIACAO",
-            joinColumns = @JoinColumn(name = "aluno_avaliaca_pk"),
-            inverseJoinColumns = @JoinColumn(name = "avaliacao_aluno_pk")
+    @JoinTable(name="TURMA_ALUNO",
+            joinColumns = @JoinColumn(name = "turma_aluno_pk"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
     )
-    private List<Avaliacao> avaliacoes = new ArrayList<>();
+    private List<Turma> turmas;
 
-    public Aluno() {
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
     }
 
-    public Aluno(String nome, String email, String senha, String matricula) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.matricula = matricula;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Aluno professor = (Aluno) o;
-        return id.equals(professor.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 
     public List<Turma> getTurmas() {
@@ -100,13 +32,5 @@ public class Aluno implements Serializable {
 
     public void setTurmas(List<Turma> turmas) {
         this.turmas = turmas;
-    }
-
-    public List<Avaliacao> getAvaliacoes() {
-        return avaliacoes;
-    }
-
-    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
-        this.avaliacoes = avaliacoes;
     }
 }
