@@ -7,12 +7,12 @@ public class CriarAvaliacaoForm {
 
     private String nome;
     private Date dataProva;
-    private String nomeTurma;
+    private Long turmaId;
 
-    public CriarAvaliacaoForm(String nome, Date dataProva, String nomeTurma) {
+    public CriarAvaliacaoForm(String nome, Date dataProva, Long turmaId) {
         this.nome = nome;
         this.dataProva = dataProva;
-        this.nomeTurma = nomeTurma;
+        this.turmaId = turmaId;
     }
 
     public String getNome() {
@@ -31,11 +31,11 @@ public class CriarAvaliacaoForm {
         this.dataProva = dataProva;
     }
 
-    public String getNomeTurma() {
-        return nomeTurma;
+    public Long getTurmaId() {
+        return turmaId;
     }
 
-    public void setNomeTurma(String nomeTurma) {
-        this.nomeTurma = nomeTurma;
+    public void setTurmaId(Long turmaId) {
+        this.turmaId = turmaId;
     }
 }

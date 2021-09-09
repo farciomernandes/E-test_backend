@@ -1,5 +1,6 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.AvaliacaoRetornoDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
 import com.example.etest.controller.form.AdicionarQuestaoForm;
 import com.example.etest.controller.form.CriarAvaliacaoForm;
@@ -34,47 +35,33 @@ public class AvaliacaoController {
     @GetMapping
     public ResponseEntity buscarTodos() {
         List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
-        return ResponseEntity.ok(avaliacoes);
+        return ResponseEntity.ok(AvaliacaoRetornoDTO.converter(avaliacoes));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity buscarUm(@PathVariable Long id) {
         Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(id);
 
-        return ResponseEntity.ok(avaliacao.get());
+        return ResponseEntity.ok(new AvaliacaoRetornoDTO(avaliacao.get()));
     }
 
     @PostMapping()
+    @Transactional
     public ResponseEntity criarAvaliacao(@RequestBody CriarAvaliacaoForm form) {
-        Optional<Turma> turmaExist = turmaRepository.findByNome(form.getNomeTurma());
+        Optional<Turma> turmaExist = turmaRepository.findById(form.getTurmaId());
+
         if(turmaExist.isPresent()){
+
             Avaliacao avaliacao = new Avaliacao(null, form.getNome(), form.getDataProva(),
                     turmaExist.get());
-            System.out.println("CRIOU ISSO: " + avaliacao);
+
             avaliacaoRepository.save(avaliacao);
             turmaExist.get().getAvaliacao().add(avaliacao);
             turmaRepository.save(turmaExist.get());
-            return ResponseEntity.ok(avaliacao);
+            return ResponseEntity.ok(new AvaliacaoRetornoDTO(avaliacao));
         }
         return ResponseEntity.status(404).body("Turma não encotrada!");
     }
-
-
-    @Transactional
-    @PostMapping("/adicionar/aluno")
-    public ResponseEntity adicionarAluno(@RequestBody AdicionarAlunoForm form ) {
-        Optional<Aluno> alunoExist = alunoRepository.findByMatricula(form.getMatricula());
-
-        if(alunoExist.isPresent()){
-            Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getIdTurma());
-            avaliacao.get().getAlunos().add(alunoExist.get());
-
-            alunoExist.get().getAvaliacoes().add(avaliacao.get());
-            return ResponseEntity.ok(alunoExist.get());
-        }
-        return ResponseEntity.status(404).body("Aluno nao encontrado!");
-    }
-
 
     @Transactional
     @PostMapping("/adicionar/questao")

@@ -27,7 +27,7 @@ public class Avaliacao implements Serializable {
     @JoinTable(name = "aluno_avaliacao",
             joinColumns = @JoinColumn(name = "avaliacao_id"),
             inverseJoinColumns = @JoinColumn(name = "aluno_id"))
-    private List<Aluno> alunos;
+    private List<Aluno> alunos  = new ArrayList<>();
 
     @ManyToMany(mappedBy = "avaliacoes")
     private List<Questao> questoes = new ArrayList<>();
@@ -39,8 +39,9 @@ public class Avaliacao implements Serializable {
         this.id = id;
         this.nome = nome;
         this.dataProva = dataProva;
-        this.nota = nota;
+        this.nota = null;
         this.turma = turma;
+        this.autor = turma.getProfessor();
     }
 
     public Long getId() {
@@ -87,10 +88,9 @@ public class Avaliacao implements Serializable {
         return autor;
     }
 
-    public void setPAutor(Professor autor) {
+    public void setAutor(Professor autor) {
         this.autor = autor;
     }
-
     public List<Aluno> getAlunos() {
         return alunos;
     }
@@ -107,7 +107,4 @@ public class Avaliacao implements Serializable {
         this.questoes = questoes;
     }
 
-    public void setAutor(Professor autor) {
-        this.autor = autor;
-    }
 }
