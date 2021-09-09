@@ -57,7 +57,6 @@ public class TurmaController {
         Optional<Aluno> alunoExist = alunoRepository.findByMatricula(form.getMatricula());
 
         if(alunoExist.isPresent() && alunoExist.get().getPerfis().get(0).getNome().equals("ROLE_ALUNO")){
-
             Optional<Turma> turma = turmaRepository.findById(form.getIdTurma());
             turma.get().getAlunos().add(alunoExist.get());
             alunoExist.get().getTurmas().add(turma.get());

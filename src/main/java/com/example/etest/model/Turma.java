@@ -20,11 +20,8 @@ public class Turma implements Serializable {
     @ManyToOne()
     private Professor professor;
 
-    @ManyToMany()
-    @JoinTable(name="TURMA_ALUNO",
-            joinColumns = @JoinColumn(name = "turma_aluno_pk"),
-            inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk")
-    )
+
+    @ManyToMany(mappedBy = "turmas")
     private List<Aluno> alunos = new ArrayList<>();
 
     @JsonBackReference
