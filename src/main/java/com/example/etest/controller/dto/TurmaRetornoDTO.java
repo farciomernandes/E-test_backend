@@ -12,6 +12,9 @@ public class TurmaRetornoDTO {
     private String avisos;
     private String nomeProfessor;
     private List<AlunoDTO> alunos = new ArrayList<>();
+    private List<AvaliacaoTurmaDTO> avaliacoes = new ArrayList();
+    private List<ComentarioDTO> comentarios = new ArrayList();
+
 
 
     public TurmaRetornoDTO(Turma turma) {
@@ -21,6 +24,12 @@ public class TurmaRetornoDTO {
         this.nomeProfessor = turma.getProfessor().getName();
         turma.getAlunos().forEach(index->{
             this.alunos.add(new AlunoDTO(index));
+        });
+        turma.getAvaliacao().forEach(index->{
+            this.avaliacoes.add(new AvaliacaoTurmaDTO(index.getNome(), index.getId(), index.getDataProva()));
+        });
+        turma.getComentario().forEach(index->{
+            this.comentarios.add(new ComentarioDTO(index.getId(), index.getTexto()));
         });
     }
 
@@ -65,6 +74,22 @@ public class TurmaRetornoDTO {
 
     public void setAlunos(List<AlunoDTO> alunos) {
         this.alunos = alunos;
+    }
+
+    public List<AvaliacaoTurmaDTO> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<AvaliacaoTurmaDTO> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+
+    public List<ComentarioDTO> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<ComentarioDTO> comentarios) {
+        this.comentarios = comentarios;
     }
 
     public List<TurmaRetornoDTO> converter(List<Turma> turmas) {

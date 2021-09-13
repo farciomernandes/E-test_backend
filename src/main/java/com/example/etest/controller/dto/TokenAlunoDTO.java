@@ -1,13 +1,17 @@
 package com.example.etest.controller.dto;
 
-public class TokenDTO {
+import com.example.etest.model.Usuario;
+
+public class TokenAlunoDTO {
 
     private String token;
     private String tipo;
+    private AlunoDTO usuario;
 
-    public TokenDTO(String token, String tipo) {
+    public TokenAlunoDTO(AlunoDTO usuario, String token, String tipo) {
         this.token = token;
         this.tipo = tipo;
+        this.usuario = usuario;
     }
 
     public String getToken() {
@@ -16,5 +20,9 @@ public class TokenDTO {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public AlunoDTO getUsuario() {
+        return usuario;
     }
 }

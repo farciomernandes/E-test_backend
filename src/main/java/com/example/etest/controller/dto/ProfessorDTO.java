@@ -13,7 +13,7 @@ public class ProfessorDTO {
     private String nome;
     private Long id;
     private Collection<? extends GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-    private List<TurmaRetornoDTO> turmas = new ArrayList<>();
+    private List<UsuarioTurmaDTO> turmas = new ArrayList<>();
 
     public ProfessorDTO(Professor professor) {
         this.matricula = professor.getMatricula();
@@ -21,7 +21,7 @@ public class ProfessorDTO {
         this.id = professor.getId();
         this.roles = professor.getAuthorities();
         professor.getTurmas().forEach(index->{
-            this.turmas.add(new TurmaRetornoDTO(index));
+            this.turmas.add(new UsuarioTurmaDTO(index.getId(), index.getNome()));
         });
     }
 
@@ -60,11 +60,15 @@ public class ProfessorDTO {
         this.roles = roles;
     }
 
-    public List<TurmaRetornoDTO> getTurmas() {
+    public void setRoles(Collection<? extends GrantedAuthority> roles) {
+        this.roles = roles;
+    }
+
+    public List<UsuarioTurmaDTO> getTurmas() {
         return turmas;
     }
 
-    public void setTurmas(List<TurmaRetornoDTO> turmas) {
+    public void setTurmas(List<UsuarioTurmaDTO> turmas) {
         this.turmas = turmas;
     }
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.etest.model.Comentario;
+
 @Entity
 public class Turma implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -27,6 +29,9 @@ public class Turma implements Serializable {
     @JsonBackReference
     @OneToMany()
     private List<Avaliacao> avaliacao = new ArrayList<>();
+
+    @OneToMany()
+    private List<Comentario> comentario = new ArrayList<>();
 
     public Turma() {
     }
@@ -98,4 +103,11 @@ public class Turma implements Serializable {
         this.avaliacao = avaliacao;
     }
 
+    public List<Comentario> getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(List<Comentario> comentario) {
+        this.comentario = comentario;
+    }
 }

@@ -30,6 +30,7 @@ public class Usuario implements UserDetails {
     private String nome;
     private String matricula;
     private String senha;
+    private String email;
 
     public Usuario(String nome, String email, String senha, String matricula) {
         this.setName(nome);
@@ -64,6 +65,14 @@ public class Usuario implements UserDetails {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String senha) {

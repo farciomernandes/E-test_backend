@@ -1,7 +1,6 @@
 package com.example.etest.controller.dto;
 
 import com.example.etest.model.Aluno;
-import com.example.etest.model.Turma;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +10,15 @@ public class AlunoDTO {
     private Long id;
     private String nome;
     private String matricula;
+    private List<UsuarioTurmaDTO> turmas = new ArrayList<>();
 
     public AlunoDTO(Aluno aluno) {
         this.id = aluno.getId();
         this.nome = aluno.getName();
         this.matricula = aluno.getMatricula();
+        aluno.getTurmas().forEach(index->{
+            this.turmas.add(new UsuarioTurmaDTO(index.getId(), index.getNome()));
+        });
     }
 
 
@@ -41,6 +44,14 @@ public class AlunoDTO {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public List<UsuarioTurmaDTO> getTurmas() {
+        return turmas;
+    }
+
+    public void setTurmas(List<UsuarioTurmaDTO> turmas) {
+        this.turmas = turmas;
     }
 
     public List<AlunoDTO> converter(List<Aluno> alunos) {
