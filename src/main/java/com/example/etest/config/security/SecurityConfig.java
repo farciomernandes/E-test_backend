@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //Avisa que quaisquer outras requisições é preciso o usuário estar autenticado
                 .anyRequest().authenticated()
                 //desabilita a protecao contra o ataque hacker: cross site request forgery
-                .and().csrf().disable()
+                .and().cors().and().csrf().disable()
                 //Avisa ao spring para nao criar sessão, pois a politica de autenticacao sera STATELESS
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //Avisa pra rodar a classe 'AutenticacaoViaToken..' antes de seguir a execucao
