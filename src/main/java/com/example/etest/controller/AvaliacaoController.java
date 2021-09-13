@@ -4,6 +4,7 @@ import com.example.etest.controller.dto.AvaliacaoRetornoDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
 import com.example.etest.controller.form.AdicionarQuestaoForm;
 import com.example.etest.controller.form.CriarAvaliacaoForm;
+import com.example.etest.controller.form.RemoverQuestaoAvaliacaoForm;
 import com.example.etest.model.*;
 import com.example.etest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +66,7 @@ public class AvaliacaoController {
     }
 
     @Transactional
-    @PostMapping("/adicionar/questao")
+    @PostMapping("/adicionar")
     public ResponseEntity adicionarQuestao(@RequestBody AdicionarQuestaoForm form ) {
         Optional<Questao> questaoExist = questaoRepository.findById(form.getIdQuestao());
         if(questaoExist.isPresent()){
@@ -79,6 +81,36 @@ public class AvaliacaoController {
         }
         return ResponseEntity.status(404).body("Questao nao encontrada!");
     }
+
+    @Transactional
+    @PutMapping("/remover/questao")
+    public ResponseEntity removerQuestao(@RequestBody RemoverQuestaoAvaliacaoForm form ) {
+        Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getIdAvaliacao());
+
+        if(avaliacao.isPresent()){
+            List<Questao> questoes  = avaliacao.get().getQuestoes();
+
+            Optional<Questao> questaoExist = questaoRepository.findById(form.getIdQuestao());
+
+            if(questaoExist.isPresent() && questoes.contains(questaoExist.get())){
+                List<Questao> newQuestoes = new ArrayList<>();
+
+                for(int i = 0; i < questoes.size(); i++){
+                    if(questoes.get(i).getId() != form.getIdQuestao()){
+                        newQuestoes.add(questoes.get(i));
+                    }
+                }
+                avaliacao.get().setQuestoes(newQuestoes);
+                System.out.println("DEU ISSO NO FILTRO: " + newQuestoes.size());
+                avaliacaoRepository.save(avaliacao.get());
+                return ResponseEntity.ok(avaliacao.get());
+            }else{
+                return ResponseEntity.status(404).body("Questao nao encontrada!");
+            }
+        }
+        return ResponseEntity.status(404).body("Avaliacao nao encontrada!");
+    }
+
 
 
 }
