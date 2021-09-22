@@ -2,14 +2,8 @@ package com.example.etest.controller;
 
 import com.example.etest.controller.dto.AvaliacaoRetornoDTO;
 import com.example.etest.controller.dto.TurmaRetornoDTO;
-import com.example.etest.controller.form.AdicionarQuestaoForm;
-import com.example.etest.controller.form.CriarAvaliacaoForm;
-import com.example.etest.controller.form.CriarComentario;
-import com.example.etest.controller.form.RemoverQuestaoAvaliacaoForm;
-import com.example.etest.model.Avaliacao;
-import com.example.etest.model.Comentario;
-import com.example.etest.model.Questao;
-import com.example.etest.model.Turma;
+import com.example.etest.controller.form.*;
+import com.example.etest.model.*;
 import com.example.etest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +57,19 @@ public class ComentarioController {
 
         return ResponseEntity.status(404).body("Turma não encotrada!");
     }
-
+    @DeleteMapping()
+    @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    public ResponseEntity remover(@RequestBody DeletarComentarioForm form){
+        Optional<Comentario> optional = comentarioRepository.findById(form.getIdComentario());
+        if(optional.isPresent()){
+            Turma turma = optional.get().getTurma();
+            if(turma.getId() == form.getIdTurma() && turma.getProfessor().getId() == form.getIdUsuario()){
+                comentarioRepository.deleteById(form.getIdComentario());
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.status(404).body("Você não tem permissão para excluir este comentário!");
+        }
+        return ResponseEntity.status(404).body("Comentário não encontrado!");
+    }
 
 }
