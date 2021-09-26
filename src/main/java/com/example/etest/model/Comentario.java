@@ -12,6 +12,7 @@ public class Comentario {
     private String texto;
 
     @ManyToOne()
+    @JoinColumn(name = "ID_TURMA")
     private Turma turma;
 
     public Comentario(Long id, String texto, Turma turma) {

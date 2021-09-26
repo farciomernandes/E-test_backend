@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.example.etest.model.Comentario;
 
 @Entity
 public class Turma implements Serializable {
@@ -30,7 +29,7 @@ public class Turma implements Serializable {
     @OneToMany()
     private List<Avaliacao> avaliacao = new ArrayList<>();
 
-    @OneToMany()
+    @OneToMany(mappedBy = "turma")
     private List<Comentario> comentario = new ArrayList<>();
 
     public Turma() {

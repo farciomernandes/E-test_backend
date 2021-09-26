@@ -57,13 +57,16 @@ public class ComentarioController {
 
         return ResponseEntity.status(404).body("Turma não encotrada!");
     }
+
     @DeleteMapping()
-    @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    @Transactional
     public ResponseEntity remover(@RequestBody DeletarComentarioForm form){
         Optional<Comentario> optional = comentarioRepository.findById(form.getIdComentario());
         if(optional.isPresent()){
             Turma turma = optional.get().getTurma();
+
             if(turma.getId() == form.getIdTurma() && turma.getProfessor().getId() == form.getIdUsuario()){
+
                 comentarioRepository.deleteById(form.getIdComentario());
                 return ResponseEntity.ok().build();
             }
