@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,10 @@ public class AvaliacaoController {
         if(questaoExist.isPresent()){
             Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getIdAvaliacao());
 
+            if(avaliacao.get().getQuestoes().contains(questaoExist.get())){
+                return ResponseEntity.status(404).body("Questao já incluida na avaliacao!");
+            }
+
             avaliacao.get().getQuestoes().add(questaoExist.get());
             questaoExist.get().getAvaliacoes().add(avaliacao.get());
 
@@ -83,7 +88,7 @@ public class AvaliacaoController {
     }
 
     @Transactional
-    @PutMapping("/remover/questao")
+    @DeleteMapping("/remover/questao")
     public ResponseEntity removerQuestao(@RequestBody RemoverQuestaoAvaliacaoForm form ) {
         Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(form.getIdAvaliacao());
 
@@ -100,10 +105,10 @@ public class AvaliacaoController {
                         newQuestoes.add(questoes.get(i));
                     }
                 }
-                avaliacao.get().setQuestoes(newQuestoes);
+                avaliacao.get().getQuestoes().remove(questaoExist.get());
+                //avaliacao.get().getQuestoes().addAll(newQuestoes);
                 System.out.println("DEU ISSO NO FILTRO: " + newQuestoes.size());
-                avaliacaoRepository.save(avaliacao.get());
-                return ResponseEntity.ok(avaliacao.get());
+                return ResponseEntity.ok(new AvaliacaoRetornoDTO(avaliacao.get()));
             }else{
                 return ResponseEntity.status(404).body("Questao nao encontrada!");
             }
