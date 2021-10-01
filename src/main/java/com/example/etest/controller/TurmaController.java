@@ -6,7 +6,6 @@ import com.example.etest.controller.form.CriarTurmaForm;
 import com.example.etest.model.Aluno;
 import com.example.etest.model.Professor;
 import com.example.etest.model.Turma;
-import com.example.etest.model.Usuario;
 import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.TurmaRepository;
@@ -16,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +79,7 @@ public class TurmaController {
         if (searchedProfessor.isPresent()) {
             Professor professor = searchedProfessor.get();
 
-            Turma newTurma = new Turma(null, form.getNome(), form.getAvisos());
+            Turma newTurma = new Turma(null, form.getNome());
             newTurma.setProfessor(professor);
 
             professor.getTurmas().add(newTurma);
@@ -105,4 +105,12 @@ public class TurmaController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/professor/{id}")
+    public ResponseEntity buscarPorUsuario(@PathVariable Long id) {
+        List<Turma> turmas =  turmaRepository.findAllById(Collections.singleton(id));
+        System.out.println("VEIO AQUI ");
+        return ResponseEntity.ok(new TurmaRetornoDTO().converter(turmas));
+    }
+
 }

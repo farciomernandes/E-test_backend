@@ -28,12 +28,9 @@ public class Questao implements Serializable {
     private String assunto;
     private Integer nivel;
 
-    @JsonBackReference()
+    @JsonBackReference
     @ManyToMany()
-    @JoinTable(name="QUESTAO_AVALIACAO",
-            joinColumns = @JoinColumn(name = "questao_avaliaca_pk"),
-            inverseJoinColumns = @JoinColumn(name = "avaliacao_questao_pk")
-    )
+    @JoinTable()
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     public Questao() {

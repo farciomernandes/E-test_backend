@@ -105,9 +105,11 @@ public class AvaliacaoController {
                         newQuestoes.add(questoes.get(i));
                     }
                 }
+
                 avaliacao.get().getQuestoes().remove(questaoExist.get());
-                //avaliacao.get().getQuestoes().addAll(newQuestoes);
-                System.out.println("DEU ISSO NO FILTRO: " + newQuestoes.size());
+
+                avaliacaoRepository.deleteById(avaliacao.get().getId());
+
                 return ResponseEntity.ok(new AvaliacaoRetornoDTO(avaliacao.get()));
             }else{
                 return ResponseEntity.status(404).body("Questao nao encontrada!");

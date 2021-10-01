@@ -16,7 +16,6 @@ public class Turma implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String avisos;
 
     @ManyToOne()
     private Professor professor;
@@ -35,9 +34,8 @@ public class Turma implements Serializable {
     public Turma() {
     }
 
-    public Turma(Long id, String nome, String avisos) {
+    public Turma(Long id, String nome ) {
         this.nome = nome;
-        this.avisos = avisos;
         this.id = id;
     }
 
@@ -70,13 +68,6 @@ public class Turma implements Serializable {
         this.nome = nome;
     }
 
-    public String getAvisos() {
-        return avisos;
-    }
-
-    public void setAvisos(String avisos) {
-        this.avisos = avisos;
-    }
 
     public Professor getProfessor() {
         return professor;

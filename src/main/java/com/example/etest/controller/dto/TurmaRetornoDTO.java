@@ -9,7 +9,6 @@ public class TurmaRetornoDTO {
 
     private Long id;
     private String nome;
-    private String avisos;
     private String nomeProfessor;
     private List<AlunoDTO> alunos = new ArrayList<>();
     private List<AvaliacaoTurmaDTO> avaliacoes = new ArrayList();
@@ -20,7 +19,6 @@ public class TurmaRetornoDTO {
     public TurmaRetornoDTO(Turma turma) {
         this.id = turma.getId();
         this.nome = turma.getNome();
-        this.avisos = turma.getAvisos();
         this.nomeProfessor = turma.getProfessor().getName();
         turma.getAlunos().forEach(index->{
             this.alunos.add(new AlunoDTO(index));
@@ -50,14 +48,6 @@ public class TurmaRetornoDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getAvisos() {
-        return avisos;
-    }
-
-    public void setAvisos(String avisos) {
-        this.avisos = avisos;
     }
 
     public String getNomeProfessor() {

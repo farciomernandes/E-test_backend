@@ -23,13 +23,13 @@ public class Avaliacao implements Serializable {
     @ManyToOne()
     private Professor autor;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "aluno_avaliacao",
             joinColumns = @JoinColumn(name = "avaliacao_id"),
             inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private List<Aluno> alunos  = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "avaliacoes")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "avaliacoes")
     private List<Questao> questoes = new ArrayList<>();
 
     public Avaliacao(){

@@ -5,12 +5,11 @@ public class CriarTurmaForm {
 
     private String nome;
     private String matricula;
-    private String avisos;
 
-    public CriarTurmaForm(String nome, String matricula, String avisos) {
+
+    public CriarTurmaForm(String nome, String matricula ) {
         this.nome = nome;
         this.matricula = matricula;
-        this.avisos = avisos;
     }
 
     public CriarTurmaForm() {
@@ -32,11 +31,4 @@ public class CriarTurmaForm {
         this.matricula = matricula;
     }
 
-    public String getAvisos() {
-        return avisos;
-    }
-
-    public void setAvisos(String avisos) {
-        this.avisos = avisos;
-    }
 }

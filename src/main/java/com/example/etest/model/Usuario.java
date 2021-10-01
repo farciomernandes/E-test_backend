@@ -34,9 +34,9 @@ public class Usuario implements UserDetails {
 
     public Usuario(String nome, String email, String senha, String matricula) {
         this.setName(nome);
-        this.setMatricula(email);
-        this.setPassword(senha);
         this.setMatricula(matricula);
+        this.setPassword(senha);
+        this.setEmail(email);
     }
 
     public Usuario() {
