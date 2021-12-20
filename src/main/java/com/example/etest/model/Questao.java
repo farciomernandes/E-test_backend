@@ -116,6 +116,14 @@ public class Questao implements Serializable {
     }
 
 
-
+    public int retornaPosicaoCorreta(){
+        int valor = -1;
+        for(int k = 0; k <= this.alternativas.size(); k++){
+            if(this.alternativas.get(k).getCorreta()){
+                valor = k;
+            }
+        }
+        return valor;
+    }
 
 }

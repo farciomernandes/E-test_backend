@@ -2,6 +2,7 @@ package com.example.etest.controller.form;
 
 
 import com.example.etest.model.Avaliacao;
+import com.example.etest.model.Resposta;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,11 +11,11 @@ import java.util.List;
 public class ProvaRespondidaForm {
 
     private Long idAluno;
-    private List<Long> respostas = new ArrayList<>();
+    private List<Resposta> respostas = new ArrayList<>();
     private Date dataEnvio;
     private Avaliacao avaliacao;
 
-    public ProvaRespondidaForm(Long idAluno, List<Long> respostas, Date dataEnvio, Avaliacao avaliacao) {
+    public ProvaRespondidaForm(Long idAluno, List<Resposta> respostas, Date dataEnvio, Avaliacao avaliacao) {
         this.idAluno = idAluno;
         this.respostas = respostas;
         this.dataEnvio = dataEnvio;
@@ -29,11 +30,11 @@ public class ProvaRespondidaForm {
         this.idAluno = idAluno;
     }
 
-    public List<Long> getRespostas() {
+    public List<Resposta> getRespostas() {
         return respostas;
     }
 
-    public void setRespostas(List<Long> respostas) {
+    public void setRespostas(List<Resposta> respostas) {
         this.respostas = respostas;
     }
 

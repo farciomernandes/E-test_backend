@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class ProvaRealizada {
 
     @Id
@@ -19,9 +20,10 @@ public class ProvaRealizada {
     @OneToOne()
     private Avaliacao avaliacao;
 
-    private List<Long> respostas = new ArrayList<>();
+    @OneToMany()
+    private List<Resposta> respostas = new ArrayList<>();
 
-    public ProvaRealizada(Long id, Date dataEntrega, Aluno aluno, Avaliacao avaliacao, List<Long> respostas) {
+    public ProvaRealizada(Long id, Date dataEntrega, Aluno aluno, Avaliacao avaliacao, List<Resposta> respostas) {
         this.id = id;
         this.nota = 0;
         this.dataEntrega = dataEntrega;
@@ -73,29 +75,17 @@ public class ProvaRealizada {
         this.nota = nota;
     }
 
-    public List<Long> getRespostas() {
+    public List<Resposta> getRespostas() {
         return respostas;
     }
 
-    public void setRespostas(List<Long> respostas) {
+    public void setRespostas(List<Resposta> respostas) {
         this.respostas = respostas;
     }
 
     public int somarNota(){
-        int nota = 0;
-        for(int k = 0; k <= this.avaliacao.getQuestoes().size();){
-            if (this.avaliacao.getQuestoes().get(k).getAlternativas().get(Math.toIntExact(this.respostas.get(k))).getCorreta()){
-                System.out.println("ACHOU UMA QUESTAO CERTA");
-                switch (this.avaliacao.getQuestoes().get(k).getNivel()){
-                    case 1:
-                        nota = nota + 1;
-                    case 2:
-                        nota = nota + 2;
-                    case 3:
-                        nota = nota + 3;
-                }
-            }
-        }
+        int nota = this.respostas.stream().mapToInt(Resposta::verificarQuestao).sum();
+
         setNota(nota);
         return nota;
     }
