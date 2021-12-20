@@ -1,29 +1,25 @@
 package com.example.etest.controller.form;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class CriarQuestaoForm {
 
     private String descricao;
 
-    private String alternativa1;
-    private String alternativa2;
-    private String alternativa3;
-    private String alternativa4;
-    private String correta;
+    private List<CriarAlternativaForm> alternativas = new ArrayList<>();
 
     private String disciplina;
     private String unidade;
     private String assunto;
     private Integer nivel;
 
-    public CriarQuestaoForm(String descricao, String alternativa1, String alternativa2, String alternativa3, String alternativa4, String correta, String disciplina, String unidade, String assunto, Integer nivel) {
+    public CriarQuestaoForm(String descricao, List<CriarAlternativaForm> alternativas, String disciplina, String unidade, String assunto, Integer nivel) {
 
         this.descricao = descricao;
-        this.alternativa1 = alternativa1;
-        this.alternativa2 = alternativa2;
-        this.alternativa3 = alternativa3;
-        this.alternativa4 = alternativa4;
-        this.correta = correta;
+        alternativas.forEach(index->{
+            this.alternativas.add(index);
+        });
         this.disciplina = disciplina;
         this.unidade = unidade;
         this.assunto = assunto;
@@ -39,44 +35,12 @@ public class CriarQuestaoForm {
         this.descricao = descricao;
     }
 
-    public String getAlternativa1() {
-        return alternativa1;
+    public List<CriarAlternativaForm> getAlternativas() {
+        return alternativas;
     }
 
-    public void setAlternativa1(String alternativa1) {
-        this.alternativa1 = alternativa1;
-    }
-
-    public String getAlternativa2() {
-        return alternativa2;
-    }
-
-    public void setAlternativa2(String alternativa2) {
-        this.alternativa2 = alternativa2;
-    }
-
-    public String getAlternativa3() {
-        return alternativa3;
-    }
-
-    public void setAlternativa3(String alternativa3) {
-        this.alternativa3 = alternativa3;
-    }
-
-    public String getAlternativa4() {
-        return alternativa4;
-    }
-
-    public void setAlternativa4(String alternativa4) {
-        this.alternativa4 = alternativa4;
-    }
-
-    public String getCorreta() {
-        return correta;
-    }
-
-    public void setCorreta(String correta) {
-        this.correta = correta;
+    public void setAlternativas(List<CriarAlternativaForm> alternativas) {
+        this.alternativas = alternativas;
     }
 
     public String getDisciplina() {

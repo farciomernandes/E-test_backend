@@ -15,7 +15,6 @@ public class Avaliacao implements Serializable {
     private Long id;
     private String nome;
     private Date dataProva;
-    private Double nota;
 
     @ManyToOne()
     private Turma turma;
@@ -39,7 +38,6 @@ public class Avaliacao implements Serializable {
         this.id = id;
         this.nome = nome;
         this.dataProva = dataProva;
-        this.nota = null;
         this.turma = turma;
         this.autor = turma.getProfessor();
     }
@@ -66,14 +64,6 @@ public class Avaliacao implements Serializable {
 
     public void setDataProva(Date dataProva) {
         this.dataProva = dataProva;
-    }
-
-    public Double getNota() {
-        return nota;
-    }
-
-    public void setNota(Double nota) {
-        this.nota = nota;
     }
 
     public Turma getTurma() {

@@ -49,7 +49,7 @@ public class UsuarioController {
         }
         else{
             if(form.getTipo().equals("Professor")){
-                user = new Professor(form.getNome(), form.getMatricula(), form.getSenha(), form.getMatricula());
+                user = new Professor(form.getNome(), form.getEmail(), form.getSenha(), form.getMatricula());
                 usuarioRepository.save(user);
 
                 Optional<Perfil> roleProfessor = perfilRepository.findByNome("ROLE_PROFESSOR");
@@ -58,7 +58,7 @@ public class UsuarioController {
 
             }else{
 
-                user = new Aluno(form.getNome(), form.getMatricula(), form.getSenha(), form.getMatricula());
+                user = new Aluno(form.getNome(), form.getEmail(), form.getSenha(), form.getMatricula());
                 usuarioRepository.save(user);
 
                 Optional<Perfil> roleAluno = perfilRepository.findByNome("ROLE_ALUNO");

@@ -1,12 +1,14 @@
 package com.example.etest.controller;
 
 import com.example.etest.controller.form.CriarQuestaoForm;
+import com.example.etest.model.Alternativa;
 import com.example.etest.model.Questao;
 import com.example.etest.repository.QuestaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,7 @@ public class QuestaoController {
     }
 
     @PostMapping()
+    @Transactional()
     public ResponseEntity adicionar(@RequestBody CriarQuestaoForm form){
         Optional<Questao> descricaoQuestao = questaoRepository.findByDescricao(form.getDescricao());
 
@@ -54,11 +57,8 @@ public class QuestaoController {
             return ResponseEntity.status(404).body("Já existe uma questao com esse enunciado");
         }
 
-        Questao questao = new Questao(null,
-                form.getDescricao(), form.getAlternativa1(), form.getAlternativa2(), form.getAlternativa3(),
-                form.getAlternativa4(), form.getCorreta(), form.getDisciplina(), form.getUnidade(), form.getAssunto(),
-                form.getNivel()
-                );
+        Questao questao = new Questao(null, form.getDescricao(), form.getAlternativas(), form.getDisciplina(), form.getUnidade(),
+                form.getAssunto(), form.getNivel());
 
         questaoRepository.save(questao);
 

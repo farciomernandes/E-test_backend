@@ -1,10 +1,7 @@
 package com.example.etest.controller;
 
 import com.example.etest.controller.dto.AvaliacaoRetornoDTO;
-import com.example.etest.controller.form.AdicionarAlunoForm;
-import com.example.etest.controller.form.AdicionarQuestaoForm;
-import com.example.etest.controller.form.CriarAvaliacaoForm;
-import com.example.etest.controller.form.RemoverQuestaoAvaliacaoForm;
+import com.example.etest.controller.form.*;
 import com.example.etest.model.*;
 import com.example.etest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +51,6 @@ public class AvaliacaoController {
         Optional<Turma> turmaExist = turmaRepository.findById(form.getTurmaId());
 
         if(turmaExist.isPresent()){
-
             Avaliacao avaliacao = new Avaliacao(null, form.getNome(), form.getDataProva(),
                     turmaExist.get());
 
@@ -116,6 +112,22 @@ public class AvaliacaoController {
             }
         }
         return ResponseEntity.status(404).body("Avaliacao nao encontrada!");
+    }
+
+    @Transactional
+    @PostMapping("/responder/{id}")
+    public ResponseEntity responderProva(@RequestBody ProvaRespondidaForm form, @PathVariable Long id){
+        Optional<Avaliacao> avaliacao = avaliacaoRepository.findById(id);
+        Optional<Aluno> aluno = alunoRepository.findById(form.getIdAluno());
+
+        if(avaliacao.isEmpty() || aluno.isEmpty()){
+            return ResponseEntity.status(404).body("Erro ao identificar prova ou aluno!");
+        }
+
+        ProvaRealizada provaRealizada = new ProvaRealizada(null, form.getDataEnvio(), aluno.get(), avaliacao.get(), form.getRespostas());
+        provaRealizada.somarNota();
+
+        return ResponseEntity.ok(provaRealizada);
     }
 
 

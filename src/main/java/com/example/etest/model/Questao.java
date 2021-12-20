@@ -1,13 +1,12 @@
 package com.example.etest.model;
 
+import com.example.etest.controller.form.CriarAlternativaForm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Questao implements Serializable {
@@ -15,13 +14,13 @@ public class Questao implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String descricao;
 
-    private String alternativa1;
-    private String alternativa2;
-    private String alternativa3;
-    private String alternativa4;
-    private String correta;
+
+    @OneToMany(mappedBy = "questao")
+    private List<Alternativa> alternativas = new ArrayList<>();
+
 
     private String disciplina;
     private String unidade;
@@ -35,30 +34,21 @@ public class Questao implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "questao_id"))
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    public Questao() {
-    }
-
-    public Questao(Long id, String descricao, String alternativa1, String alternativa2, String alternativa3, String alternativa4, String correta, String disciplina, String unidade, String assunto, Integer nivel) {
+    public Questao(Long id, String descricao, List<CriarAlternativaForm> alternativas, String disciplina,
+                   String unidade, String assunto,
+                   Integer nivel) {
         this.id = id;
         this.descricao = descricao;
-        this.alternativa1 = alternativa1;
-        this.alternativa2 = alternativa2;
-        this.alternativa3 = alternativa3;
-        this.alternativa4 = alternativa4;
-        this.correta = correta;
+        alternativas.forEach(index->{
+            this.alternativas.add(new Alternativa(null, index.getDescricao(), index.getCorreta()));
+        });
         this.disciplina = disciplina;
         this.unidade = unidade;
         this.assunto = assunto;
         this.nivel = nivel;
     }
 
-    public void setDisciplina(String disciplina){
-        this.disciplina = disciplina;
-    }
-
-    public String getDisciplina(){
-        return this.disciplina;
-    }
+    public Questao(){}
 
 
     public Long getId() {
@@ -75,6 +65,22 @@ public class Questao implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public List<Alternativa> getAlternativas() {
+        return alternativas;
+    }
+
+    public void setAlternativas(List<Alternativa> alternativas) {
+        this.alternativas = alternativas;
+    }
+
+    public String getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
     }
 
     public String getUnidade() {
@@ -101,59 +107,6 @@ public class Questao implements Serializable {
         this.nivel = nivel;
     }
 
-    public String getAlternativa1() {
-        return alternativa1;
-    }
-
-    public void setAlternativa1(String alternativa1) {
-        this.alternativa1 = alternativa1;
-    }
-
-    public String getAlternativa2() {
-        return alternativa2;
-    }
-
-    public void setAlternativa2(String alternativa2) {
-        this.alternativa2 = alternativa2;
-    }
-
-    public String getAlternativa3() {
-        return alternativa3;
-    }
-
-    public void setAlternativa3(String alternativa3) {
-        this.alternativa3 = alternativa3;
-    }
-
-    public String getAlternativa4() {
-        return alternativa4;
-    }
-
-    public void setAlternativa4(String alternativa4) {
-        this.alternativa4 = alternativa4;
-    }
-
-    public String getCorreta() {
-        return correta;
-    }
-
-    public void setCorreta(String correta) {
-        this.correta = correta;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Questao questao = (Questao) o;
-        return id.equals(questao.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
     public List<Avaliacao> getAvaliacoes() {
         return avaliacoes;
     }
@@ -161,4 +114,8 @@ public class Questao implements Serializable {
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
     }
+
+
+
+
 }
