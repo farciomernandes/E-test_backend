@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.POST, "/autenticacao").permitAll()
+                .antMatchers(HttpMethod.GET, "/autenticacao/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/user").hasRole("PROFESSOR")
                 .antMatchers(HttpMethod.GET, "/user/*").hasRole("PROFESSOR")
                 //Avisa que quaisquer outras requisições é preciso o usuário estar autenticado

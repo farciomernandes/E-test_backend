@@ -19,12 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -66,6 +62,23 @@ public class AutenticacaoController {
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
+
+    }
+
+    @GetMapping("/{token}")
+    public ResponseEntity recuperarDados(@PathVariable String token){
+        Long idUsuario = tokenService.getIdUsuario(token);
+
+        Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+
+        if(usuario.get() instanceof Professor){
+            Optional<Professor> professor = professorRepository.findById(idUsuario);
+
+            return ResponseEntity.ok(new TokenProfessorDTO(new ProfessorDTO(professor.get()), token, "Bearer"));
+        }
+
+        Optional<Aluno> aluno = alunoRepository.findById(idUsuario);
+        return ResponseEntity.ok(new TokenAlunoDTO(new AlunoDTO(aluno.get()), token, "Bearer"));
 
     }
 }
