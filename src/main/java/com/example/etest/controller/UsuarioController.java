@@ -104,4 +104,9 @@ public class UsuarioController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(usuarioRepository.findAll());
+    }
 }

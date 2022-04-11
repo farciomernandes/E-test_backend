@@ -14,8 +14,8 @@ public class Aluno extends Usuario {
 
     @ManyToMany()
     @JoinTable(name = "TURMA_ALUNO",
-            joinColumns = @JoinColumn(name = "turma_aluno_pk"),
-            inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk"))
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "turma_id"))
     private List<Turma> turmas;
 
 
