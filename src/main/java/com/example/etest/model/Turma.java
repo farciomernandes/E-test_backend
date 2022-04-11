@@ -21,7 +21,7 @@ public class Turma implements Serializable {
     private Professor professor;
 
 
-    @ManyToMany(mappedBy = "turmas")
+    @ManyToMany(mappedBy = "turmas", cascade = CascadeType.MERGE)
     private List<Aluno> alunos = new ArrayList<>();
 
     @JsonBackReference

@@ -12,7 +12,7 @@ public class Aluno extends Usuario {
     @ManyToMany(mappedBy = "alunos", cascade = CascadeType.MERGE)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "TURMA_ALUNO",
             joinColumns = @JoinColumn(name = "turma_aluno_pk"),
             inverseJoinColumns = @JoinColumn(name = "aluno_turma_pk"))

@@ -1,20 +1,21 @@
 package com.example.etest.controller;
 
+import com.example.etest.controller.dto.AvaliacaoRetornoDTO;
 import com.example.etest.controller.dto.TurmaRetornoDTO;
 import com.example.etest.controller.form.AdicionarAlunoForm;
 import com.example.etest.controller.form.CriarTurmaForm;
-import com.example.etest.model.Aluno;
-import com.example.etest.model.Professor;
-import com.example.etest.model.Turma;
+import com.example.etest.model.*;
 import com.example.etest.repository.AlunoRepository;
 import com.example.etest.repository.ProfessorRepository;
 import com.example.etest.repository.TurmaRepository;
 import com.example.etest.repository.UsuarioRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +95,6 @@ public class TurmaController {
         return ResponseEntity.ok("Erro ao buscar professor");
     }
 
-
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity remover(@PathVariable Long id){
@@ -111,6 +111,26 @@ public class TurmaController {
         List<Turma> turmas =  turmaRepository.findAllById(Collections.singleton(id));
         System.out.println("VEIO AQUI ");
         return ResponseEntity.ok(new TurmaRetornoDTO().converter(turmas));
+    }
+
+    @PutMapping()
+    @Transactional
+    public ResponseEntity removerAluno(@RequestBody AdicionarAlunoForm form){
+        Optional<Turma> turma = turmaRepository.findById(form.getIdTurma());
+            List<Aluno> alunos  = turma.get().getAlunos();
+            List<Aluno> newAlunos = new ArrayList<>();
+            Optional<Aluno> alunoExist = alunoRepository.findByMatricula(form.getMatricula());
+
+            for(int i = 0; i < alunos.size(); i++){
+                if(alunos.get(i).getMatricula() != form.getMatricula()){
+                        newAlunos.add(alunos.get(i));
+                }
+            }
+                turma.get().getAlunos().remove(alunoExist.get());
+
+                turma.get().setAlunos(newAlunos);
+                return ResponseEntity.ok(new TurmaRetornoDTO(turma.get()));
+
     }
 
 }
