@@ -21,7 +21,6 @@ public class Questao implements Serializable {
     @OneToMany(mappedBy = "questao")
     private List<Alternativa> alternativas = new ArrayList<>();
 
-
     private String disciplina;
     private String unidade;
     private String assunto;
@@ -34,14 +33,11 @@ public class Questao implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "questao_id"))
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-    public Questao(Long id, String descricao, List<CriarAlternativaForm> alternativas, String disciplina,
+    public Questao(Long id, String descricao, String disciplina,
                    String unidade, String assunto,
                    Integer nivel) {
         this.id = id;
         this.descricao = descricao;
-        alternativas.forEach(index->{
-            this.alternativas.add(new Alternativa(null, index.getDescricao(), index.getCorreta()));
-        });
         this.disciplina = disciplina;
         this.unidade = unidade;
         this.assunto = assunto;
