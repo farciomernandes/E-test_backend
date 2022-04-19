@@ -83,10 +83,4 @@ public class ProvaRealizada {
         this.respostas = respostas;
     }
 
-    public int somarNota(){
-        int nota = this.respostas.stream().mapToInt(Resposta::verificarQuestao).sum();
-
-        setNota(nota);
-        return nota;
-    }
 }

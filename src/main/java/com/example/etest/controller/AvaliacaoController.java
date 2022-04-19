@@ -125,8 +125,6 @@ public class AvaliacaoController {
         }
 
         ProvaRealizada provaRealizada = new ProvaRealizada(null, form.getDataEnvio(), aluno.get(), avaliacao.get(), form.getRespostas());
-        provaRealizada.somarNota();
-
         return ResponseEntity.ok(provaRealizada);
     }
 

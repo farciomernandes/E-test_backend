@@ -1,5 +1,7 @@
 package com.example.etest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Alternativa {
 
     private Boolean correta = false;
 
+    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name = "ID_QUESTAO")
     private Questao questao;
@@ -48,4 +51,14 @@ public class Alternativa {
     public void setCorreta(Boolean correta) {
         this.correta = correta;
     }
+
+
+    public Questao getQuestao() {
+        return questao;
+    }
+
+    public void setQuestao(Questao questao) {
+        this.questao = questao;
+    }
+
 }

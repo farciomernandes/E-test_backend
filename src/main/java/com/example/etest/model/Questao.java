@@ -2,6 +2,7 @@ package com.example.etest.model;
 
 import com.example.etest.controller.form.CriarAlternativaForm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class Questao implements Serializable {
 
     private String descricao;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "questao")
     private List<Alternativa> alternativas = new ArrayList<>();
 
@@ -109,17 +110,6 @@ public class Questao implements Serializable {
 
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
-    }
-
-
-    public int retornaPosicaoCorreta(){
-        int valor = -1;
-        for(int k = 0; k <= this.alternativas.size(); k++){
-            if(this.alternativas.get(k).getCorreta()){
-                valor = k;
-            }
-        }
-        return valor;
     }
 
 }

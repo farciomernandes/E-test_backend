@@ -97,4 +97,8 @@ public class Avaliacao implements Serializable {
         this.questoes = questoes;
     }
 
+
+    public Questao getQuestao(int index){
+        return this.getQuestoes().get(index);
+    }
 }

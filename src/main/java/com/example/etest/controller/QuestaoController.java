@@ -31,7 +31,7 @@ public class QuestaoController {
     @GetMapping("/{id}")
     public ResponseEntity buscarUm(@PathVariable Long id){
         Optional<Questao> questao = questaoRepository.findById(id);
-        return ResponseEntity.ok(questao);
+        return ResponseEntity.ok(questao.get().getAlternativas());
     }
 
     @GetMapping("/unidade/{unidade}")
@@ -61,6 +61,11 @@ public class QuestaoController {
             return ResponseEntity.status(404).body("Já existe uma questao com esse enunciado");
         }
 
+        Questao questao = new Questao(null, form.getDescricao(),  form.getDisciplina(), form.getUnidade(),
+                form.getAssunto(), form.getNivel());
+
+        questaoRepository.save(questao);
+
         List<Alternativa> alternativas = new ArrayList<>();
 
         //Monta as alternativas
@@ -72,19 +77,14 @@ public class QuestaoController {
                 alternativas.add(alternativaExist.get());
             }else{
                 Alternativa novaAlternativa = new Alternativa(null, elem.getDescricao(), elem.getCorreta());
+                novaAlternativa.setQuestao(questao);
                 alternativaRepository.save(novaAlternativa);
                 alternativas.add(novaAlternativa);
             }
 
         });
 
-
-        Questao questao = new Questao(null, form.getDescricao(),  form.getDisciplina(), form.getUnidade(),
-                form.getAssunto(), form.getNivel());
-
         questao.setAlternativas(alternativas);
-        questaoRepository.save(questao);
-
         return ResponseEntity.ok(questao);
     }
 

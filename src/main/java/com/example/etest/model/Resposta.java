@@ -46,14 +46,4 @@ public class Resposta {
         this.correta = correta;
     }
 
-    public int verificarQuestao(){
-        if(this.questao.retornaPosicaoCorreta() == this.correta){
-            switch (this.questao.getNivel()){
-                case 1: return 1;
-                case 2: return 2;
-                case 3: return 3;
-            }
-        }
-        return 0;
-    }
 }

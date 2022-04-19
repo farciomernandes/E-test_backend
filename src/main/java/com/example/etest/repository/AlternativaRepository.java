@@ -9,4 +9,7 @@ import java.util.Optional;
 
 public interface AlternativaRepository extends JpaRepository<Alternativa, Long> {
     Optional<Alternativa> findByDescricao(String descricao);
+
+    Optional<Alternativa> findAllByQuestao(Questao questao);
+
 }
