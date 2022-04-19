@@ -8,7 +8,6 @@ public class CriarQuestaoForm {
     private String descricao;
 
     private List<CriarAlternativaForm> alternativas = new ArrayList<>();
-
     private String disciplina;
     private String unidade;
     private String assunto;
